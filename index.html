@@ -1,38 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Sound Map</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Sound Map</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/loading-animation.css">
 </head>
 <body>
-    <!-- Loading Screen with Animation -->
-    <div id="loading-screen" class="loading-screen">
-        <div class="skeleton-loader"></div>
-        <div class="logo-container">
-            <img src="assets/logo.svg" alt="Interactive Sound Map" style="width: 100px; height: auto;">
-            <h1>Interactive Sound Map</h1>
-        </div>
+  <header>
+    <div class="logo">Interactive Sound Map</div>
+  </header>
+  
+  <div class="loading-container">
+    <div class="skeleton-loader">
+      <div class="spin-loader"></div>
     </div>
-    
-    <!-- Main Content -->
-    <div id="main-content">
-        <div class="map-container">
-            <!-- Карточки будут добавлены динамически -->
-        </div>
-    </div>
-    
-    <!-- Theme Toggle (hidden initially) -->
-    <label class="theme-toggle-container">
-        <input type="checkbox" id="theme-toggle">
-        <span class="slider"></span>
-    </label>
-    
-    <!-- Footer -->
-    <footer>
-        <p>© 2024 Interactive Sound Map</p>
-    </footer>
-    <script src="script.js"></script>
+    <div class="loading-text">Loading...</div>
+  </div>
+  
+  <div class="map-container">
+    <!-- Карта и контент будут загружены здесь -->
+  </div>
+  
+  <footer>
+    <p>© 2023 Interactive Sound Map. All rights reserved.</p>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script src="js/loading.js"></script>
 </body>
 </html>
