@@ -1,6 +1,48 @@
 #!/usr/bin/env node
-// Обработка загрузки и пульсация кнопки
+// Инициализация элементов и обработка загрузки
 let testButton = document.querySelector('.test-button');
+let loadingSpinner = document.getElementById('loadingSpinner');
+let soundMap = document.getElementById('soundMap');
+let soundModal = document.getElementById('soundModal');
+let closeModalButton = document.getElementById('closeModalButton');
+let saveSoundButton = document.getElementById('saveSoundButton');
+
+// Показываем загрузку
+function showLoading() {
+  if (loadingSpinner) {
+    loadingSpinner.style.display = 'flex';
+    soundMap.classList.add('loading');
+  }
+}
+
+// Скрываем загрузку
+function hideLoading() {
+  if (loadingSpinner) {
+    loadingSpinner.style.display = 'none';
+    soundMap.classList.remove('loading');
+  }
+}
+
+// Функция для открытия модального окна
+function openModal() {
+  soundModal.style.display = 'block';
+  document.body.style.overflow = 'hidden';
+}
+
+// Функция для закрытия модального окна
+function closeModal() {
+  soundModal.style.display = 'none';
+  document.body.style.overflow = 'auto';
+}
+
+// Обработка нажатия на кнопку Test Sound
+function handleTestSound() {
+  showLoading();
+  setTimeout(() => {
+    openModal();
+    hideLoading();
+  }, 1000);
+}
 
 // Проверка на пульсацию кнопки при загрузке
 function handleLoading() {
@@ -9,133 +51,37 @@ function handleLoading() {
   }
 }
 
-// Обработка клавиатуры для редактирования звука
-function handleKeyDown(event, soundId, modal) {
-    const soundEditorContainer = document.querySelector(`.sound-editor-container-${soundId}`);
-    const soundInput = document.getElementById(`soundDuration-${soundId}`);
-    const soundNameInput = document.getElementById(`soundName-${soundId}`);
-    const saveButton = document.getElementById(`saveSoundButton-${soundId}`);
-    const cancelButton = document.getElementById(`cancelSoundButton-${soundId}`);
+// Обработка клавиатуры для модального окна
+soundModal.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape') {
+    event.preventDefault();
+    closeModal();
+  }
+});
 
-    const isEditorElement = [soundInput, soundNameInput, saveButton, cancelButton].some(el => el && el.contains(event.target)) || soundEditorContainer.contains(event.target);
-
-    if (soundInput && soundInput.contains(event.target) && event.key === 'Enter') {
-        event.preventDefault();
-        saveSoundToStorage(soundId, soundInput, soundNameInput);
-    }
-    else if (soundEditorContainer && event.key === 'Escape') {
-        event.preventDefault();
-        closeModal(soundEditorContainer);
-    }
-    else if (event.key === 'Tab') {
-        event.preventDefault();
-        const focusOrder = [soundInput, soundNameInput, saveButton, cancelButton];
-        const currentElement = event.target;
-        const currentIndex = focusOrder.findIndex(el => el && el === currentElement);
-        const nextIndex = (currentIndex + 1) % focusOrder.length;
-        const nextElement = focusOrder[nextIndex];
-        if (nextElement) {
-            nextElement.focus();
-        }
-    }
+// Обработка нажатия на кнопку Test Sound
+if (testButton) {
+  testButton.addEventListener('click', handleTestSound);
+  testButton.addEventListener('focus', () => {
+    testButton.classList.add('test-button-focus');
+  });
+  testButton.addEventListener('blur', () => {
+    testButton.classList.remove('test-button-focus');
+  });
 }
 
-// Функция инициализации редактора звука
-function initSoundEditor(soundId, modal) {
-    const soundInput = document.getElementById(`soundDuration-${soundId}`);
-    const soundNameInput = document.getElementById(`soundName-${soundId}`);
-    const saveButton = document.getElementById(`saveSoundButton-${soundId}`);
-    const cancelButton = document.getElementById(`cancelSoundButton-${soundId}`);
-    const soundEditorContainer = document.querySelector(`.sound-editor-container-${soundId}`);
-
-    soundEditorContainer.setAttribute('aria-modal', 'true');
-    soundEditorContainer.setAttribute('aria-label', 'Редактор звука: добавление нового звука');
-
-    const soundsData = JSON.parse(localStorage.getItem('userSounds')) || [];
-    const maxSounds = 10;
-    if (soundsData.length >= maxSounds) {
-        showErrorMessage('Максимальное количество звуков: 10. Удалите старые звуки или создайте новый плейлист для хранения больше звуков.');
-        return;
-    }
-
-    soundInput.addEventListener('keydown', function(event) {
-        handleKeyDown(event, soundId, modal);
-    });
-    soundNameInput.addEventListener('keydown', function(event) {
-        handleKeyDown(event, soundId, modal);
-    });
-    saveButton.addEventListener('keydown', function(event) {
-        handleKeyDown(event, soundId, modal);
-    });
-    cancelButton.addEventListener('keydown', function(event) {
-        handleKeyDown(event, soundId, modal);
-    });
-
-    soundEditorContainer.addEventListener('keydown', function(event) {
-        if (event.key === 'Escape') {
-            event.preventDefault();
-            closeModal(soundEditorContainer);
-        }
-    });
-
-    soundEditorContainer.addEventListener('keydown', function(event) {
-        if (event.key === 'Tab' && event.shiftKey) {
-            event.preventDefault();
-            const focusOrder = [soundInput, soundNameInput, saveButton, cancelButton];
-            const currentElement = event.target;
-            const currentIndex = focusOrder.findIndex(el => el && el === currentElement);
-            const prevIndex = (currentIndex - 1 + focusOrder.length) % focusOrder.length;
-            const prevElement = focusOrder[prevIndex];
-            if (prevElement) {
-                prevElement.focus();
-            }
-        }
-    });
-
-    function saveSoundToStorage(soundId, durationInput, soundNameInput) {
-        const duration = parseFloat(durationInput.value);
-        const name = soundNameInput.value.trim() || 'Unnamed Sound';
-
-        if (!name) {
-            showErrorMessage('Имя звука не может быть пустым.');
-            return;
-        }
-
-        let isValid = true;
-        if (isNaN(duration)) {
-            showErrorMessage('Длина звука должна быть числом!');
-            isValid = false;
-        } else if (duration <= 0) {
-            showErrorMessage('Длина звука должна быть положительной!');
-            isValid = false;
-        } else if (duration > 10) {
-            showErrorMessage('Длина звука не должна превышать 10 секунд!');
-            isValid = false;
-        }
-
-        if (!isValid) {
-            return;
-        }
-
-        const soundsData = JSON.parse(localStorage.getItem('userSounds')) || [];
-        const maxSounds = 10;
-        if (soundsData.length >= maxSounds) {
-            showErrorMessage('Максимальное количество звуков: 10. Удалите старые звуки или создайте новый плейлист для хранения больше звуков.');
-            return;
-        }
-
-        try {
-            const updatedSounds = [...soundsData, { id: soundId, duration, name }];
-            localStorage.setItem('userSounds', JSON.stringify(updatedSounds));
-            showSuccessMessage('Звук сохранён успешно!');
-            closeModal(modal);
-        } catch (error) {
-            if (error.name === 'QuotaExceededError') {
-                showErrorMessage('Ошибка: не хватает места в localStorage! Удалите старые звуки или создайте новый плейлист.');
-            } else {
-                showErrorMessage('Ошибка сохранения звука. Проверьте соединение или попробуйте позже.');
-            }
-            console.error('Ошибка сохранения:', error);
-        }
-    }
+// Закрытие модального окна
+if (closeModalButton) {
+  closeModalButton.addEventListener('click', () => closeModal());
 }
+
+// Обработка нажатия на карту звука
+soundMap.addEventListener('click', (event) => {
+  const dot = event.target.closest('.map-dot');
+  if (dot) {
+    alert(`Вы выбрали звук с ID: ${dot.getAttribute('data-sound')}`);
+  }
+});
+
+// Инициализация загрузки интерфейса
+window.addEventListener('DOMContentLoaded', handleLoading);
