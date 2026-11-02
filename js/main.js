@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
       body.classList.remove('dark-mode');
     }
     localStorage.setItem('theme', themeToggle.checked ? 'dark' : 'light');
-  });
+  })
 
   const savedTheme = localStorage.getItem('theme');
   if (savedTheme === 'dark') {
@@ -18,18 +18,13 @@ document.addEventListener('DOMContentLoaded', () => {
     themeToggle.checked = true;
   }
 
-  // Логика адаптивности кнопки "Play"
-  const playButton = document.querySelector('.play-button');
-  if (playButton) {
-    playButton.addEventListener('click', () => {
-      // Логика для кнопки на мобильных
-      if (window.innerWidth <= 768) {
-        playButton.style.display = 'none';
-        setTimeout(() => {
-          playButton.style.display = 'block';
-        }, 1000);
-      }
-    });
+  // Функция для отображения окна ошибки
+  function showErrorModal(message) {
+    const errorModal = document.getElementById('error-modal');
+    if (errorModal) {
+      errorModal.style.display = 'flex';
+      errorModal.querySelector('.error-message').textContent = message;
+    }
   }
 
   // Анимация загрузки
@@ -40,28 +35,47 @@ document.addEventListener('DOMContentLoaded', () => {
     mapContainer.addEventListener('load', () => {
       skeletonLoader.style.display = 'none';
       skeletonLoader.style.animation = 'none';
-    });
-    
-    // Отображаем кнопку теста загрузки звука
+    })
+
     const testLoadContainer = document.getElementById('test-load-container');
     if (testLoadContainer) {
       testLoadContainer.style.display = 'block';
     }
   }
 
-  // Запуск анимации прогресса
-  const progressBar = document.querySelector('.loading-progress-bar');
-  if (progressBar) {
-    progressBar.style.animationPlaybackRate = '1';
+  // Запуск анимации загрузки
+  const loadingCircle = document.querySelector('.loading-circle');
+  const loadingContainer = document.querySelector('.loading-container');
+  if (loadingCircle && loadingContainer) {
     setTimeout(() => {
-      progressBar.style.animation = 'none';
+      loadingCircle.classList.add('completed');
+      setTimeout(() => {
+        loadingCircle.classList.add('success');
+        setTimeout(() => {
+          const successContainer = document.createElement('div');
+          successContainer.className = 'loading-success';
+          successContainer.innerHTML = '<div class="checkmark"></div><span class="progress-text">Загрузка завершена!</span>';
+          loadingContainer.appendChild(successContainer);
+          loadingContainer.classList.add('completed');
+          setTimeout(() => {
+            loadingContainer.style.opacity = '0';
+            setTimeout(() => {
+              loadingContainer.style.display = 'none';
+            }, 300);
+          }, 500);
+        }, 500);
+      }, 500);
     }, 1500);
   }
 
   // Логика редактирования звука и валидация длины звука
   function validateSoundDuration(duration) {
+    if (!duration || isNaN(duration)) { // Проверка на пустое значение или некорректный ввод
+      showErrorModal('Пожалуйста, укажите длительность звука!');
+      return false;
+    }
     if (duration > 10000) { // 10 секунд в миллисекундах
-      alert('Длительность звука не может превышать 10 секунд!');
+      showErrorModal('Длительность звука не может превышать 10 секунд!');
       return false;
     }
     return true;
@@ -72,16 +86,19 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!validateSoundDuration(newDuration)) {
       return;
     }
+
     const savedSound = localStorage.getItem('soundDuration');
     if (savedSound) {
       const parsedSound = parseInt(savedSound);
       if (parsedSound !== newDuration) {
         localStorage.setItem('soundDuration', newDuration);
-        alert('Звук успешно сохранён!');
+        showErrorModal('Звук успешно обновлён!');
+      } else {
+        showErrorModal('Данные уже сохранены!');
       }
     } else {
       localStorage.setItem('soundDuration', newDuration);
-      alert('Звук успешно сохранён!');
+      showErrorModal('Звук успешно сохранён!');
     }
   }
 
@@ -92,8 +109,15 @@ document.addEventListener('DOMContentLoaded', () => {
     soundInput.addEventListener('change', handleSoundEdit);
     saveButton.addEventListener('click', () => {
       const duration = parseInt(soundInput.value);
-      if (validateSoundDuration(duration)) {
-        alert('Сохранение звука подтверждено!');
+      if (!validateSoundDuration(duration)) {
+        return;
+      }
+
+      try {
+        localStorage.setItem('soundDuration', duration);
+        showErrorModal('Сохранение звука подтверждено!');
+      } catch (error) {
+        showErrorModal('Ошибка сохранения! Проверьте настройки браузера.');
       }
     });
   }

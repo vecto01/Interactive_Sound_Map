@@ -1,258 +1,171 @@
-.loading-screen {
-    display: flex;
-    flex-direction: column;
+// styles.css
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    overflow: hidden;
+}
+
+/* Лоадер */
+.loader-container {
+    display: none;
     justify-content: center;
     align-items: center;
+    height: 100vh;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.1);
-    color: var(--text-color);
+    background-color: rgba(255, 255, 255, 0.95);
     z-index: 1000;
     pointer-events: none;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    justify-content: center;
-    overflow: hidden;
-    --text-color: #333;
-    --text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-    --checkmark-color: #4CAF50;
 }
 
-.loading-progress-container {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 15px;
-    flex-direction: column;
-    align-items: center;
-    --progress-color: #4CAF50;
-    --progress-bg: #e0e0e0;
-    width: 100%;
-    position: relative;
-    --checkmark-color: #4CAF50;
-}
-
-.loading-spinner {
-    width: 60px;
-    height: 60px;
-    border: 6px solid rgba(0, 0, 0, 0.1);
-    border-radius: 50%;
-    border-top-color: var(--progress-color);
-    animation: loading-spinner-animation 1s ease-in-out infinite;
-    margin-bottom: 10px;
-    will-change: transform, opacity;
-    opacity: 1;
-    position: relative;
-    margin: 0 auto;
-    --progress-color: #4CAF50;
-    --progress-bg: #e0e0e0;
-    --text-color: #333;
-}
-
-.loading-checkmark {
+/* Лоадер */
+.loader-container {
     display: none;
-    width: 40px;
-    height: 40px;
-    color: var(--checkmark-color);
-    font-size: 24px;
-    font-weight: bold;
-    margin-top: 10px;
-    animation: checkmark-appear 0.5s ease-out forwards;
-    --checkmark-color: #4CAF50;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.95);
+    z-index: 1000;
+    pointer-events: none;
+}
+
+.loader {
+    width: 100px;
+    height: 100px;
+    border: 6px solid #333;
+    border-radius: 50%;
+    border-top-color: #4CAF50;
+    position: relative;
+    animation: loading 1.5s ease-in-out infinite;
+}
+
+@keyframes loading {
+    0% { stroke-dashoffset: 100; }
+    100% { stroke-dashoffset: 0; }
+}
+
+.loader-container.active {
+    display: flex;
+    pointer-events: auto;
+}
+
+.loader.completed {
+    animation: loader-complete 0.5s ease-out;
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.5);
+}
+
+@keyframes loader-complete {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(0.5); opacity: 0; }
 }
 
 .loading-message {
-    font-size: 1.5rem;
+    margin-top: 10px;
+    color: #333;
     font-weight: bold;
-    color: var(--text-color);
-    text-shadow: var(--text-shadow);
-    margin-bottom: 10px;
-    aria-label: "Загрузка контента, пожалуйста, подождите";
-    position: relative;
-    z-index: 2;
-    text-align: center;
-    --text-color: #333;
-
-    /* Контраст для лоадера и редактора звука */
-    .loading-message {
-        color: #000; /* Темный текст для лучшего контраста */
-    }
-
-    /* Контраст для редактора звука */
-    #sound-input, .save-sound-button {
-        color: #000; /* Темный текст */
-        border-color: #333; /* Темный цвет границы */
-    }
-
-    /* Центровка и адаптивность для редактора звука */
-    #sound-editor-container {
-        background-color: #f8f9fa;
-        padding: 15px;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        margin-top: 20px;
-        display: none;
-        position: relative;
-        width: 100%;
-        max-width: 400px;
-        margin: 20px auto;
-    }
-    --text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
 }
 
-.progress-container {
-    width: 80px;
-    height: 4px;
-    background-color: var(--progress-bg);
-    border-radius: 2px;
-    position: relative;
-    margin-bottom: 10px;
-    overflow: hidden;
-}
-
-.progress-bar {
-    height: 100%;
-    background-color: var(--progress-color);
-    border-radius: 2px;
-    animation: progress-fill 1.5s ease-in-out forwards;
-}
-
-@keyframes loading-spinner-animation {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-@keyframes progress-fill {
-    0% { width: 0%; }
-    100% { width: 100%; }
-}
-
-@keyframes checkmark-appear {
-    0% { opacity: 0; transform: translateY(10px); }
-    100% { opacity: 1; transform: translateY(0); }
-}
-
-.loading-screen.finished {
-    pointer-events: auto;
-    opacity: 0.9;
-    transition: opacity 0.3s ease;
-}
-
-.loading-screen.finished .loading-spinner {
-    animation-play-state: paused;
-    opacity: 0;
-    animation: none;
-}
-
-.loading-screen.finished .loading-checkmark {
-    display: block;
+#loading-checkmark {
+    display: none;
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #4CAF50;
+    font-size: 24px;
+    font-weight: bold;
     animation: checkmark-appear 0.5s ease-out forwards;
 }
 
-.loading-screen.finished .loading-message {
-    color: #2E7D32;
-    animation: pulse-text 1.5s infinite ease-in-out;
-    text-shadow: none;
+@keyframes checkmark-appear {
+    0% { opacity: 0; transform: translateY(-10px); }
+    100% { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes pulse-text {
-    0%, 80%, 100% { opacity: 1; }
-    40% { opacity: 0.5; }
-}
-
-/* Адаптивность для разных устройств */
 @media (max-width: 1200px) {
-    .loading-spinner {
-        width: 50px;
-        height: 50px;
+    .loader {
+        width: 80px;
+        height: 80px;
+        border: 5px solid #333;
     }
-    .loading-checkmark {
-        width: 30px;
-        height: 30px;
-        font-size: 20px;
-    }
-    .loading-message {
-        font-size: 1.3rem;
-    }
-    .progress-container {
-        width: 60px;
+    .loader.completed {
+        width: 40px;
+        height: 40px;
     }
 }
 
 @media (max-width: 768px) {
-    .loading-spinner {
-        width: 40px;
-        height: 40px;
+    .loader {
+        width: 60px;
+        height: 60px;
+        border: 4px solid #333;
     }
-    .loading-checkmark {
-        width: 25px;
-        height: 25px;
-        font-size: 16px;
+    .loader.completed {
+        width: 30px;
+        height: 30px;
     }
-    .loading-message {
-        font-size: 1.2rem;
-    }
-    .loading-progress-container {
-        flex-direction: row;
-    }
-    .progress-container {
-        width: 40px;
-    }
-    .loading-screen.finished .loading-checkmark {
-        margin-top: 5px;
+    #loading-checkmark {
+        width: 30px;
+        height: 30px;
+        font-size: 20px;
     }
 }
 
-.loading-screen.finished .loading-message {
-    color: #2E7D32;
-    animation: none;
+#sound-editor-container {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    display: none;
+    width: 100%;
+    max-width: 400px;
+    margin: 20px auto;
+}
 
-    /* Стили для редактора звука */
+#sound-input, .save-sound-button {
+    color: #000;
+    border-color: #333;
+    font-size: 16px;
+}
+
+.save-sound-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.save-sound-button:hover {
+    background-color: #45a049;
+}
+
+@media (max-width: 768px) {
     #sound-editor-container {
-        background-color: #f8f9fa;
-        padding: 15px;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        margin-top: 20px;
-        display: none;
+        padding: 10px;
+        margin-top: 10px;
     }
-    
     #sound-input {
-        width: 100%;
-        padding: 8px;
-        margin-bottom: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        font-size: 16px;
+        padding: 6px;
     }
-    
     .save-sound-button {
-        background-color: #4CAF50;
-        color: white;
-        border: none;
-        padding: 10px 15px;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 16px;
-    }
-    
-    .save-sound-button:hover {
-        background-color: #45a049;
-    }
-    
-    /* Адаптивность для редактора звука */
-    @media (max-width: 768px) {
-        #sound-editor-container {
-            padding: 10px;
-            margin-top: 10px;
-        }
-        #sound-input {
-            padding: 6px;
-        }
-        .save-sound-button {
-            padding: 8px 12px;
-        }
+        padding: 8px 12px;
     }
 }
