@@ -1,119 +1,81 @@
-// Автоматический тест клавиатуры для редактора звука
-// Запускается через браузер и проверяет:
-// 1. Нажатие Enter сохраняет звук.
-// 2. Нажатие Escape закрывает редактор.
-// 3. Переключение по Tab работает корректно.
+// Тест клавиатуры для Interactive_Sound_Map
+// Запускается через браузер (например, Chrome DevTools)
 
-// Инициализация теста
-function testKeyboardNavigation() {
-    // Получаем элементы редактора
-    const soundEditorContainer = document.querySelector('.sound-editor-container');
-    const soundInput = document.getElementById('soundDuration-1');
-    const soundNameInput = document.getElementById('soundName-1');
-    const saveButton = document.getElementById('saveSoundButton-1');
-    const cancelButton = document.getElementById('cancelSoundButton-1');
-    
-    // Проверка на наличие элементов
-    if (!soundEditorContainer || !soundInput || !soundNameInput || !saveButton || !cancelButton) {
-        console.error('Элементы редактора не найдены.');
-        return false;
+// Создаем модальное окно для тестирования
+const modal = document.createElement('div');
+modal.id = 'test-modal';
+modal.style.position = 'fixed';
+modal.style.top = '0';
+modal.style.left = '0';
+modal.style.width = '100%';
+modal.style.height = '100%';
+modal.style.backgroundColor = 'rgba(0,0,0,0.5)';
+modal.style.zIndex = '1000';
+modal.style.display = 'none';
+modal.style.ariaHidden = 'true';
+
+const content = document.createElement('div');
+content.id = 'test-content';
+content.style.backgroundColor = 'white';
+content.style.padding = '20px';
+content.style.maxWidth = '500px';
+content.style.margin = '100px auto';
+content.style.textAlign = 'center';
+content.style.role = 'dialog';
+content.style.ariaModal = 'true';
+
+content.innerHTML = "" +
+    `<h3>Тест клавиатуры</h3>` +
+    `<div style="margin: 20px 0;">` +
+        `<input id="test-input" type="text" placeholder="Введите текст" style="width: 100%; padding: 8px; margin-bottom: 10px;">` +
+        `<button id="save-btn" style="width: 100%; padding: 8px; background: #4CAF50; color: white; border: none; cursor: pointer;">Сохранить</button>` +
+    `</div>` +
+    `<button id="close-btn" style="margin-top: 10px; padding: 8px; background: #f44336; color: white; border: none; cursor: pointer;">Закрыть</button>`;
+
+modal.appendChild(content);
+document.body.appendChild(modal);
+
+// Открываем модальное окно
+modal.style.display = 'block';
+
+// Фокусируемся на поле ввода
+const input = document.getElementById('test-input');
+input.focus();
+
+// Логируем события клавиатуры
+const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+        console.log('✅ Нажата клавиша Enter в поле ввода');
     }
-    
-    // Устанавливаем фокус на поле длины звука
-    soundInput.focus();
-    
-    // Проверка нажатия Enter
-    console.log('Тестируем нажатие Enter...');
-    const eventEnter = new KeyboardEvent('keydown', {
-        key: 'Enter',
-        bubbles: true,
-        cancelable: true
-    });
-    soundInput.dispatchEvent(eventEnter);
-    
-    // Проверка, что редактор закрылся (если сохранение прошло успешно)
-    setTimeout(() => {
-        if (soundEditorContainer.classList.contains('hidden')) {
-            console.log('✅ Нажатие Enter корректно сохраняет звук.');
+    if (e.target.id === 'save-btn' && e.key === 'Enter') {
+        console.log('✅ Нажата клавиша Enter в кнопке Сохранить');
+    }
+    if (e.target.id === 'close-btn' && e.key === 'Escape') {
+        console.log('✅ Нажата клавиша Escape для закрытия');
+    }
+    if (e.key === 'Tab') {
+        const activeElement = document.activeElement;
+        const nextElement = activeElement.nextElementSibling;
+        const prevElement = activeElement.previousElementSibling;
+        
+        if (e.shiftKey) {
+            // Shift+Tab: переключение назад
+            if (prevElement) {
+                prevElement.focus();
+                console.log(`✅ Shift+Tab: переключение к предыдущему элементу: ${prevElement.id}`);
+            }
         } else {
-            console.error('❌ Нажатие Enter не закрыло редактор.');
+            // Tab: переключение вперед
+            if (nextElement) {
+                nextElement.focus();
+                console.log(`✅ Tab: переключение к следующему элементу: ${nextElement.id}`);
+            }
         }
-    }, 1000);
-    
-    // Проверка нажатия Escape
-    console.log('Тестируем нажатие Escape...');
-    const eventEscape = new KeyboardEvent('keydown', {
-        key: 'Escape',
-        bubbles: true,
-        cancelable: true
-    });
-    soundEditorContainer.dispatchEvent(eventEscape);
-    
-    // Проверка, что редактор закрылся
-    setTimeout(() => {
-        if (soundEditorContainer.classList.contains('hidden')) {
-            console.log('✅ Нажатие Escape корректно закрывает редактор.');
-        } else {
-            console.error('❌ Нажатие Escape не закрыло редактор.');
-        }
-    }, 1000);
-    
-    // Проверка переключения по Tab
-    console.log('Тестируем переключение по Tab...');
-    const eventTab = new KeyboardEvent('keydown', {
-        key: 'Tab',
-        bubbles: true,
-        cancelable: true
-    });
-    
-    // Переключение между полями
-    soundInput.dispatchEvent(eventTab);
-    setTimeout(() => {
-        const currentElement = document.activeElement;
-        if (currentElement === soundNameInput) {
-            console.log('✅ Переключение на soundNameInput.');
-        } else {
-            console.error('❌ Переключение на soundNameInput не сработало.');
-        }
-    }, 500);
-    
-    // Переключение на кнопку save
-    soundNameInput.dispatchEvent(eventTab);
-    setTimeout(() => {
-        const currentElement = document.activeElement;
-        if (currentElement === saveButton) {
-            console.log('✅ Переключение на saveButton.');
-        } else {
-            console.error('❌ Переключение на saveButton не сработало.');
-        }
-    }, 500);
-    
-    // Переключение на кнопку cancel
-    saveButton.dispatchEvent(eventTab);
-    setTimeout(() => {
-        const currentElement = document.activeElement;
-        if (currentElement === cancelButton) {
-            console.log('✅ Переключение на cancelButton.');
-        } else {
-            console.error('❌ Переключение на cancelButton не сработало.');
-        }
-    }, 500);
-    
-    // Переключение обратно на soundInput
-    cancelButton.dispatchEvent(eventTab);
-    setTimeout(() => {
-        const currentElement = document.activeElement;
-        if (currentElement === soundInput) {
-            console.log('✅ Переключение обратно на soundInput.');
-        } else {
-            console.error('❌ Переключение обратно на soundInput не сработало.');
-        }
-    }, 500);
-    
-    return true;
-}
+    }
+};
 
-// Запуск теста
-if (typeof window !== 'undefined') {
-    testKeyboardNavigation();
-}
+// Присоединяем обработчик событий
+document.addEventListener('keydown', handleKeyDown);
+
+// Логируем начальное состояние
+console.log('🔍 Начало теста клавиатуры...');

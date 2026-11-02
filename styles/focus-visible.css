@@ -1,0 +1,9 @@
+:focus-visible {
+    outline: 3px solid #4a6bff;
+    outline-offset: 2px;
+    color: #fff; /* Белый текст на светлой теме */
+    background-color: rgba(74, 107, 255, 0.1); /* Непрозрачный фон для акцента */
+}
+
+/* Для тёмной темы */
+:focus-visible:not([data-theme=

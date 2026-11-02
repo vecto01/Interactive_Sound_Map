@@ -5,23 +5,9 @@ html, body {
     padding: 0;
     height: 100%;
     font-family: Arial, sans-serif;
-    background-color: #f5f5f5;
-    overflow: hidden;
-}
-
-/* Лоадер */
-.loader-container {
-    display: none;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background-color: rgba(255, 255, 255, 0.95);
-    z-index: 1000;
-    pointer-events: none;
+    background-color: #121212;
+    color: #ffffff;
+    transition: background-color 0.5s ease, color 0.5s ease;
 }
 
 /* Лоадер */
@@ -125,47 +111,141 @@ html, body {
     }
 }
 
+/* Основной контент модального окна редактирования звука */
 #sound-editor-container {
     background-color: #f8f9fa;
-    padding: 15px;
+    padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     margin-top: 20px;
     display: none;
     width: 100%;
     max-width: 400px;
-    margin: 20px auto;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    overflow: auto;
+    max-height: 80vh;
+    border-radius: 8px;
 }
 
-#sound-input, .save-sound-button {
-    color: #000;
-    border-color: #333;
+.editor-title {
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333333;
+    text-align: center;
+}
+
+#sound-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
     font-size: 16px;
+    margin-bottom: 15px;
+    color: #000;
+    transition: border-color 0.3s ease;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+}
+
+#sound-input:focus-visible, #sound-input:focus {
+    border-color: #4CAF50;
+    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.5);
+    outline: none;
 }
 
 .save-sound-button {
+    width: 100%;
     background-color: #4CAF50;
     color: white;
     border: none;
-    padding: 10px 15px;
+    padding: 10px;
     border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
+    margin-bottom: 10px;
+    transition: background-color 0.3s ease, box-shadow 0.2s ease;
+    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.2);
 }
 
 .save-sound-button:hover {
     background-color: #45a049;
+    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.4);
+}
+
+.save-sound-button:focus-visible, .save-sound-button:focus {
+    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.8);
+    outline: 2px solid #4CAF50;
+}
+
+#close-sound-editor-button {
+    width: 100%;
+    background-color: #666666;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+#close-sound-editor-button:hover {
+    background-color: #555555;
+}
+
+#close-sound-editor-button:focus-visible, #close-sound-editor-button:focus {
+    box-shadow: 0 0 0 2px rgba(102, 102, 102, 0.5);
+    outline: 2px solid #666666;
+}
+
+/* :focus-visible для всех интерактивных элементов */
+input[type="number"]:focus-visible, button:focus-visible {
+    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.5);
+    outline: none;
 }
 
 @media (max-width: 768px) {
     #sound-editor-container {
-        padding: 10px;
+        padding: 15px;
         margin-top: 10px;
+        max-width: 90%;
+        width: 90%;
+        border-radius: 8px;
     }
     #sound-input {
-        padding: 6px;
+        padding: 8px;
+        font-size: 14px;
     }
-    .save-sound-button {
-        padding: 8px 12px;
+    .save-sound-button, #close-sound-editor-button {
+        padding: 8px;
+        font-size: 14px;
+    }
+    .editor-title {
+        font-size: 1.1rem;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    html, body {
+        background-color: #121212;
+        color: #ffffff;
+    }
+    #sound-editor-container {
+        background-color: #2d2d2d;
+        color: #ffffff;
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+    #sound-input, .save-sound-button, #close-sound-editor-button {
+        color: #ffffff;
+        border-color: #444444;
+    }
+    #sound-input:focus-visible, .save-sound-button:focus-visible, #close-sound-editor-button:focus-visible {
+        border-color: #4CAF50;
+        box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.5);
     }
 }

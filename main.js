@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 // Обработка клавиатуры для редактирования звука
 function handleKeyDown(event, soundId, modal) {
     const soundEditorContainer = document.querySelector(`.sound-editor-container-${soundId}`);
@@ -41,8 +42,16 @@ function initSoundEditor(soundId, modal) {
     const saveButton = document.getElementById(`saveSoundButton-${soundId}`);
     const cancelButton = document.getElementById(`cancelSoundButton-${soundId}`);
     const soundEditorContainer = document.querySelector(`.sound-editor-container-${soundId}`);
+    
     soundEditorContainer.setAttribute('aria-modal', 'true');
     soundEditorContainer.setAttribute('aria-label', 'Редактор звука: добавление нового звука');
+
+    // Проверка на переполнение localStorage при открытии редактора
+    const soundsData = JSON.parse(localStorage.getItem('userSounds')) || [];
+    const maxSounds = 10;
+    if (soundsData.length >= maxSounds) {
+        showErrorMessage('Максимальное количество звуков: 10. Удалите старые звуки или создайте новый плейлист для хранения больше звуков.', soundEditorContainer);
+    }
 
     // Привязка обработчиков клавиатуры
     soundInput.addEventListener('keydown', function(event) {
@@ -57,11 +66,27 @@ function initSoundEditor(soundId, modal) {
     cancelButton.addEventListener('keydown', function(event) {
         handleKeyDown(event, soundId, modal);
     });
+    
     // Обработка Escape для модального окна
     soundEditorContainer.addEventListener('keydown', function(event) {
         if (event.key === 'Escape') {
             event.preventDefault();
             closeModal(soundEditorContainer);
+        }
+    });
+    
+    // Обработка Shift+Tab для обратного переключения фокуса
+    soundEditorContainer.addEventListener('keydown', function(event) {
+        if (event.key === 'Tab' && event.shiftKey) {
+            event.preventDefault();
+            const focusOrder = [soundInput, soundNameInput, saveButton, cancelButton];
+            const currentElement = event.target;
+            const currentIndex = focusOrder.findIndex(el => el && el === currentElement);
+            const prevIndex = (currentIndex - 1 + focusOrder.length) % focusOrder.length;
+            const prevElement = focusOrder[prevIndex];
+            if (prevElement) {
+                prevElement.focus();
+            }
         }
     });
 
@@ -96,9 +121,8 @@ function initSoundEditor(soundId, modal) {
         // Проверка на переполнение localStorage
         const soundsData = JSON.parse(localStorage.getItem('userSounds')) || [];
         const maxSounds = 10;
-
         if (soundsData.length >= maxSounds) {
-            showErrorMessage(`Максимальное количество звуков: ${maxSounds}. Удалите старые звуки или создайте новые плейлисты для хранения больше звуков.`);
+            showErrorMessage('Максимальное количество звуков: 10. Удалите старые звуки или создайте новый плейлист для хранения больше звуков.');
             return;
         }
 

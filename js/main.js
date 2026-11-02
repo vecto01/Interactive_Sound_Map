@@ -18,6 +18,14 @@ document.addEventListener('DOMContentLoaded', () => {
     themeToggle.checked = true;
   }
 
+  // ARIA-атрибуты для модального окна
+  const soundEditorContainer = document.getElementById('sound-editor-container');
+  if (soundEditorContainer) {
+    soundEditorContainer.setAttribute('role', 'dialog');
+    soundEditorContainer.setAttribute('aria-modal', 'true');
+    soundEditorContainer.setAttribute('aria-label', 'Редактор звука: измените длительность звука');
+  }
+
   // Функция для отображения окна ошибки
   function showErrorModal(message) {
     const errorModal = document.getElementById('error-modal');
@@ -124,19 +132,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Отображение редактора звука при клике на тест-кнопку
   const testLoadButton = document.getElementById('test-load-button');
-  const soundEditorContainer = document.getElementById('sound-editor-container');
-
-  if (testLoadButton && soundEditorContainer) {
+  if (testLoadButton) {
     testLoadButton.addEventListener('click', () => {
-      soundEditorContainer.style.display = 'block';
-      // Загрузка скрипта keyboard_controller.js и инициализация обработчиков
-      const keyboardScript = document.createElement('script');
-      keyboardScript.src = 'js/keyboard_controller.js';
-      keyboardScript.onload = () => {
-        const keyboardController = window.keyboardController;
-        keyboardController.setupEventListeners(soundEditorContainer);
-      };
-      document.head.appendChild(keyboardScript);
+      const soundEditorContainer = document.getElementById('sound-editor-container');
+      if (soundEditorContainer) {
+        soundEditorContainer.style.display = 'block';
+        // Загрузка скрипта keyboard_controller.js и инициализация обработчиков
+        const keyboardScript = document.createElement('script');
+        keyboardScript.src = 'js/keyboard_controller.js';
+        keyboardScript.onload = () => {
+          const keyboardController = window.keyboardController;
+          keyboardController.setupEventListeners(soundEditorContainer);
+        };
+        document.head.appendChild(keyboardScript);
+      }
     });
   }
 })
