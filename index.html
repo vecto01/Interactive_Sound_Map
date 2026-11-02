@@ -1,8 +1,4 @@
 <!DOCTYPE html>
-
-<script>
-    console.log('HTML загружен. Проверка скрипта a11y-test.js...');
-</script>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -13,32 +9,21 @@
   <link rel="stylesheet" href="styles/loading.css">
 </head>
 <body>
+    <div class="loading-indicator" id="loading-spinner">
+        <div class="spinner"></div>
+    </div>
     <script src="a11y-test.js" defer></script>
     
-    <div class="map-container container">
-        <script>
-            console.log('Тест подключения скрипта a11y-test.js выполнен.');
-            console.log('Проверка выполнения a11y-test.js...');
-            window.testA11y = true; // Для ручного тестирования в DevTools
-        </script>
-        
-        <!-- Контейнер для загрузки данных -->
-        <div id="loading-container" class="loading">
-          <div class="loading-indicator"></div>
-          <span class="loading-text">Загрузка данных...</span>
+    <div class="content" id="content-container">
+        <h1>Interactive Sound Map</h1>
+        <p>Explore sounds with interactive maps.</p>
+        <div class="ready-banner">
+          <p>Ready!</p>
+          <span class="checkmark">✓</span>
         </div>
-        
-        <!-- Основной контент приложения -->
-        <div id="main-content">
-          <!-- Здесь будет основной контент -->
-        </div>
-        
-        <!-- Сообщение об успешном завершении -->
-        <div id="success-message" class="success-message hidden">
-          <span class="success-text">Готово!</span>
-        </div>
+        <button id="test-sound">Test Sound</button>
     </div>
     
-    <script src="scripts/main.js"></script>
-</body>
-</html>
+    <div class="footer">
+        <p>© 2024 Interactive Sound Map</p>
+    </div>
