@@ -4,26 +4,31 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Interactive Sound Map</title>
-  <link rel="stylesheet" href="styles/main.css">
-  <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="styles/loading.css">
 </head>
 <body>
-    <div class="loading-indicator" id="loading-spinner">
-        <div class="spinner"></div>
-    </div>
-    <script src="a11y-test.js" defer></script>
-    
-    <div class="content" id="content-container">
-        <h1>Interactive Sound Map</h1>
-        <p>Explore sounds with interactive maps.</p>
-        <div class="ready-banner">
-          <p>Ready!</p>
-          <span class="checkmark">✓</span>
-        </div>
-        <button id="test-sound">Test Sound</button>
+  <div class="loading-container" id="loadingOverlay" aria-live="polite" aria-busy="true">
+    <div class="loading-spinner"></div>
+    <div class="loading-text">Загрузка карты звуков...</div>
+  </div>
+  
+  <div class="content" id="content-container">
+    <div class="map-placeholder">
+      <div class="loading-spinner-small"></div>
+      <p class="loading-text-placeholder">Нажмите на метку на карте, чтобы прослушать звук.</p>
     </div>
     
-    <div class="footer">
-        <p>© 2024 Interactive Sound Map</p>
+    <div class="content-section">
+      <h1>Интерактивная карта звуков</h1>
+      <p>Исследуйте звуки с помощью интерактивной карты.</p>
+      <button id="test-sound" class="button">Пробный звук</button>
     </div>
+  </div>
+  
+  <div class="footer">
+    <p class="footer-text">© 2024 Interactive Sound Map</p>
+  </div>
+  
+  <script src="scripts/loading.js" defer></script>
+</body>
+</html>
