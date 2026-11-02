@@ -129,6 +129,14 @@ document.addEventListener('DOMContentLoaded', () => {
   if (testLoadButton && soundEditorContainer) {
     testLoadButton.addEventListener('click', () => {
       soundEditorContainer.style.display = 'block';
+      // Загрузка скрипта keyboard_controller.js и инициализация обработчиков
+      const keyboardScript = document.createElement('script');
+      keyboardScript.src = 'js/keyboard_controller.js';
+      keyboardScript.onload = () => {
+        const keyboardController = window.keyboardController;
+        keyboardController.setupEventListeners(soundEditorContainer);
+      };
+      document.head.appendChild(keyboardScript);
     });
   }
 })
