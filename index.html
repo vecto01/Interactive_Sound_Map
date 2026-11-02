@@ -1,6 +1,31 @@
+<!DOCTYPE html>
 <!-- Индикатор прогресса загрузки -->
-<div id="dotsLoader" class="dotsLoader">
-  <div class="dot"></div>
-  <div class="dot"></div>
-  <div class="dot"></div>
+<div id="loadingSpinner" class="loading-spinner">
+  <div class="spinner"></div>
+</div>
+<p id="loadingText" class="loading-text">Загрузка интерфейса...</p>
+
+<!-- Кнопка для тестирования модального окна -->
+<button id="testButton" class="test-button">Test Sound</button>
+
+<!-- Основной контейнер -->
+<div class="container">
+  <!-- Основной контент приложения -->
+  <div id="sound-editor-container" role="dialog" aria-modal="true" aria-label="Редактор звука: измените длительность звука" class="modal-container">
+    <!-- Модальное окно будет добавлено динамически через JavaScript -->
+  </div>
+
+  <!-- Модальное окно для тестирования -->
+  <div id="testModal" class="modal"></div>
+  <div id="testModalContent" class="modal-content">
+    <h2>Тестирование звука</h2>
+    <input type="number" id="sound-input" placeholder="Введите длительность звука (мс)" min="100" max="10000">
+    <button id="save-sound-button" class="modal-button">Сохранить</button>
+    <button id="close-modal-button" class="modal-button">Закрыть</button>
+  </div>
+</div>
+
+<!-- Футер -->
+<div class="footer">
+  <p>Interactive Sound Map. © 2024</p>
 </div>

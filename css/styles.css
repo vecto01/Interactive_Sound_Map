@@ -1,13 +1,171 @@
-.skip-link {
-  position: absolute;
-  left: -9999px;
-  top: 0;
-  z-index: 9999;
-  padding: 0.5rem;
-  background: #fff;
-  border: 1px solid #ccc;
-  cursor: pointer;
+@media (max-width: 1024px) {
+  /* Лэптоп: адаптивные отступы и размеры кнопок */
+  .map-container {
+    padding: 20px;
+  }
+  .test-button {
+    width: 100%;
+    margin: 10px 0;
+  }
+  .sound-input, .save-button, .close-button {
+    width: 80%;
+    margin: 5px;
+  }
 }
-.skip-link:focus {
+
+@media (max-width: 768px) {
+  /* Таблитка: еще более компактное размещение */
+  .sound-input, .save-button, .close-button {
+    width: 90%;
+    margin: 5px 0;
+  }
+  .modal {
+    width: 90%;
+    margin: 10px auto;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Мобильное: максимально компактное размещение */
+  .sound-input, .save-button, .close-button {
+    width: 100%;
+    margin: 5px;
+  }
+  .modal {
+    width: 95%;
+    margin: 5px auto;
+  }
+  .error-message, .success-message {
+    font-size: 14px;
+  }
+}
+
+/* Основные стили: адаптивные отступы и контраст */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+  background-color: #f8f9fa;
+}
+
+.dark-mode body {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+/* Заголовок и текст */
+.h1, .h2 {
+  color: #333;
+  font-weight: 700;
+}
+.dark-mode .h1, .dark-mode .h2 {
+  color: #e0e0e0;
+}
+
+/* Кнопки: контраст и обратная связь */
+button, .btn {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.dark-mode button, .dark-mode .btn {
+  background-color: #2E7D32;
+}
+
+button:hover, .btn:hover {
+  background-color: #45a049;
+}
+.dark-mode button:hover, .dark-mode .btn:hover {
+  background-color: #3a9629;
+}
+
+button:focus-visible, .btn:focus-visible {
+  outline: 3px solid #4CAF50;
+  outline-offset: 2px;
+}
+.dark-mode button:focus-visible, .dark-mode .btn:focus-visible {
+  outline: 3px solid #8BC34A;
+}
+
+/* Модальное окно: стили и доступность */
+.modal {
+  position: fixed;
+  top: 0;
   left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.modal.open {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 500px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.dark-mode .modal-content {
+  background-color: #202124;
+  color: #ffffff;
+}
+
+/* Анимация загрузки */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.loading-circle {
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(76, 175, 80, 0.2);
+  border-radius: 50%;
+  border-top-color: #4CAF50;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-success {
+  text-align: center;
+  color: #4CAF50;
+}
+
+/* Логика отступов и адаптивности */
+.skeleton-loader, .map-container {
+  width: 100%;
+  padding: 20px;
+}
+
+.test-button {
+  width: 100%;
+  margin: 20px 0;
+  padding: 12px;
+}
+
+.error-message, .success-message {
+  color: #d32f2f;
+  font-weight: bold;
+}
+.dark-mode .error-message, .dark-mode .success-message {
+  color: #ff5252;
 }
