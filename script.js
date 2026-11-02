@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Лоадер и анимации
-    const loadingScreen = document.querySelector('#loading-container');
-    const loadingText = document.querySelector('.loading-message');
+    const loadingScreen = document.querySelector('.loading-screen');
+    const loadingText = document.querySelector('.loading-text');
     const testLoadBtn = document.getElementById('test-load-button');
     
     // Показываем вращающийся индикатор
@@ -12,13 +12,22 @@ document.addEventListener('DOMContentLoaded', function() {
         loadingText.textContent = 'Loading...';
     }
     
-    // Плавное исчезновение лоадера
-    function hideLoader() {
+    // Плавное исчезновение лоадера с анимацией завершения
+    function hideLoaderWithAnimation() {
+        loadingScreen.style.opacity = '0.5';
+        
         setTimeout(() => {
             loadingScreen.style.opacity = '0';
+            loadingScreen.classList.add('hidden');
+            
+            // Добавим визуальный индикатор успешной загрузки
+            const spinner = document.querySelector('.spinner');
+            spinner.style.borderTopColor = 'var(--primary-color)';
+            spinner.style.animationPlaybackRate = '1.5';
+            
             setTimeout(() => {
-                loadingScreen.style.display = 'none';
-            }, 300);
+                spinner.style.animationPlaybackRate = '1';
+            }, 500);
         }, 1000);
     }
     
@@ -26,10 +35,9 @@ document.addEventListener('DOMContentLoaded', function() {
     function simulateSoundLoad() {
         showLoader();
         
-        // Имитация загрузки звука
+        // Имитация загрузки звука с анимацией
         setTimeout(() => {
-            // Убираем индикатор загрузки
-            hideLoader();
+            hideLoaderWithAnimation();
             
             // Показываем кнопку теста
             testLoadBtn.style.display = 'block';

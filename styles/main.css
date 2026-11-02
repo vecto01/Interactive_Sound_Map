@@ -43,6 +43,7 @@
       z-index: 9999;
       opacity: 1;
       transition: opacity 0.5s ease-out;
+      min-height: 200px;
     }
 
     .loading-screen.hidden {
@@ -54,22 +55,23 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      max-width: 80%;
     }
 
     .spinner {
-      width: 50px;
-      height: 50px;
-      border: 6px solid rgba(var(--text-color), 0.3);
+      width: 60px;
+      height: 60px;
+      border: 7px solid rgba(var(--text-color), 0.3);
       border-radius: 50%;
       border-top-color: var(--text-color);
       animation: spin 1s ease-in-out infinite;
     }
 
     .loading-text {
-      margin-top: 10px;
+      margin-top: 15px;
       color: var(--text-color);
       font-weight: bold;
-      font-size: 1.2rem;
+      font-size: clamp(1rem, 2vw, 1.5rem);
     }
 
     .map-container {
@@ -150,6 +152,20 @@
         font-size: 0.9rem;
         padding: 0.6rem;
       }
+      .loading-screen {
+        position: relative;
+        min-height: 100%;
+      }
+    }
+
+    @media (max-width: 1024px) and (min-width: 769px) {
+      .loading-text {
+        font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+      }
+      .spinner {
+        width: 70px;
+        height: 70px;
+      }
     }
 
     @media (max-width: 480px) {
@@ -160,6 +176,13 @@
       .card {
         padding: 1rem;
         font-size: 0.9rem;
+      }
+      .loading-screen {
+        position: fixed;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 90%;
+        max-width: 300px;
       }
     }
 
