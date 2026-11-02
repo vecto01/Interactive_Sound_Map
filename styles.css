@@ -1,28 +1,21 @@
+.audio-error-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #ffc107; /* Желтый с высоким контрастом */
+    color: #d32f2f; /* Красный с высоким контрастом */
+    padding: 15px;
+    border-radius: 8px;
+    z-index: 1001;
+    font-size: clamp(0.8rem, 1.2vw, 1rem);
+}
 
-    /* Стили для кнопки теста загрузки звука */
-    .test-load-button {
-        padding: 10px 20px;
-        background-color: #4CAF50;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: clamp(0.8rem, 1.5vw, 1rem);
-        display: block;
-        width: fit-content;
-        margin: 20px 0;
-    }
-
-    /* Сообщение об ошибке загрузки */
-    .audio-error-message {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background-color: #ffebee;
-        color: #c62828;
-        padding: 15px;
-        border-radius: 8px;
-        z-index: 1001;
-        font-size: clamp(0.8rem, 1.2vw, 1rem);
-    }
+/* Ошибка загрузки звука */
+.error-message {
+    color: #ff5722;
+    margin-top: 20px;
+    font-weight: bold;
+    text-align: center;
+    display: none;
+}
