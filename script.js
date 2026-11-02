@@ -13,12 +13,27 @@ document.addEventListener('keydown', function(event) {
   
   // Сохранение звука по нажатию Enter в полях ввода
   const inputFields = document.querySelectorAll('.sound-input');
+  
+  const saveSound = () => {
+    const soundData = {
+      id: document.querySelector('.sound-input[data-sound-id]').value,
+      value: document.querySelector('.sound-input').value
+    };
+    try {
+      localStorage.setItem('userSound', JSON.stringify(soundData));
+      alert('Звук сохранён!');
+    } catch (e) {
+      if (e.name === 'QuotaExceededError') {
+        alert('Ошибка: не хватает места в localStorage!');
+      } else {
+        alert('Ошибка сохранения: ' + e.message);
+      }
+    }
+  };
+  
   inputFields.forEach(field => {
     if (field.value && event.key === 'Enter') {
-      const soundId = field.getAttribute('data-sound-id');
-      if (soundId) {
-        console.log('Звук сохранён:', soundId);
-      }
+      saveSound();
     }
   });
 });
@@ -26,9 +41,7 @@ document.addEventListener('keydown', function(event) {
 // Анимация точек загрузки
 function animateDots() {
   const dotsLoader = document.getElementById('dotsLoader');
-  const dot1 = document.getElementById('dot1');
-  const dot2 = document.getElementById('dot2');
-  const dot3 = document.getElementById('dot3');
+
   
   let currentIndex = 0;
   

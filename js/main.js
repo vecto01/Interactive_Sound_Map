@@ -125,7 +125,11 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('soundDuration', duration);
         showErrorModal('Сохранение звука подтверждено!');
       } catch (error) {
-        showErrorModal('Ошибка сохранения! Проверьте настройки браузера.');
+        if (error.message.includes('QuotaExceededError')) {
+          showErrorModal('Не хватает места в localStorage! Пожалуйста, удалите некоторые данные.');
+        } else {
+          showErrorModal('Ошибка сохранения! Проверьте настройки браузера.');
+        }
       }
     });
   }
@@ -145,6 +149,16 @@ document.addEventListener('DOMContentLoaded', () => {
         keyboardController.setupEventListeners(modal);
       };
       document.head.appendChild(keyboardScript);
+    });
+  }
+  // Логика закрытия модального окна через Escape
+  const soundEditor = document.getElementById('sound-editor-container');
+  if (soundEditor) {
+    soundEditor.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && soundEditor.classList.contains('active')) {
+        soundEditor.classList.remove('active');
+        document.body.style.overflow = 'auto';
+      }
     });
   }
 })
