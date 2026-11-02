@@ -23,11 +23,11 @@ function handleKeyDown(event, soundId, modal) {
     // Навигация по табуляции
     else if (event.key === 'Tab') {
         event.preventDefault();
-        const editorElements = [soundInput, soundNameInput, saveButton, cancelButton];
+        const focusOrder = [soundInput, soundNameInput, saveButton, cancelButton];
         const currentElement = event.target;
-        const currentIndex = editorElements.findIndex(el => el && el === currentElement);
-        const nextIndex = (currentIndex + 1) % editorElements.length;
-        const nextElement = editorElements[nextIndex];
+        const currentIndex = focusOrder.findIndex(el => el && el === currentElement);
+        const nextIndex = (currentIndex + 1) % focusOrder.length;
+        const nextElement = focusOrder[nextIndex];
         if (nextElement) {
             nextElement.focus();
         }
@@ -41,6 +41,8 @@ function initSoundEditor(soundId, modal) {
     const saveButton = document.getElementById(`saveSoundButton-${soundId}`);
     const cancelButton = document.getElementById(`cancelSoundButton-${soundId}`);
     const soundEditorContainer = document.querySelector(`.sound-editor-container-${soundId}`);
+    soundEditorContainer.setAttribute('aria-modal', 'true');
+    soundEditorContainer.setAttribute('aria-label', 'Редактор звука: добавление нового звука');
 
     // Привязка обработчиков клавиатуры
     soundInput.addEventListener('keydown', function(event) {
@@ -96,7 +98,7 @@ function initSoundEditor(soundId, modal) {
         const maxSounds = 10;
 
         if (soundsData.length >= maxSounds) {
-            showErrorMessage(`Максимальное количество звуков: ${maxSounds}. Пожалуйста, удалите старые звуки.`);
+            showErrorMessage(`Максимальное количество звуков: ${maxSounds}. Удалите старые звуки или создайте новые плейлисты для хранения больше звуков.`);
             return;
         }
 

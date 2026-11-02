@@ -118,41 +118,122 @@ function saveSoundToStorage(soundId, durationInput, soundNameInput) {
 function showEditSoundModal(soundId) {
     const modal = document.createElement('div');
     modal.className = 'sound-edit-modal';
-    modal.innerHTML = `
-        <div class="modal-overlay" aria-hidden="true"></div>
-        <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="sound-modal-title">
-            <h3 id="sound-modal-title" class="modal-title">Редактировать звук</h3>
-            <p class="modal-subtitle" style="text-align: center; margin: 10px 0;">Загрузите длину звука и его имя:</p>
-            <div class="sound-controls">
-                <input type="number" id="soundDurationInput" min="1" max="10" step="0.1" placeholder="Длина звука (сек.)" aria-label="Длина звука">
-                <input type="text" id="soundNameInput" placeholder="Имя звука" aria-label="Имя звука">
-                <button id="saveSound" class="save-button">Сохранить</button>
-                <button id="cancelSound" class="cancel-button">Отменить</button>
-            </div>
-        </div>
-    `;
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-labelledby', 'sound-modal-title');
+
+    const modalContent = document.createElement('div');
+    modalContent.className = 'modal-content';
+    modalContent.setAttribute('aria-labelledby', 'sound-modal-title');
+
+    const description = document.createElement('div');
+    description.id = 'sound-modal-description';
+    description.textContent = 'Редактируйте длину звука и его имя.';
+    description.style = 'margin-top: 5px; color: #666;';
+    modalContent.appendChild(description);
+
+    const title = document.createElement('h3');
+    title.id = 'sound-modal-title';
+    title.textContent = 'Редактировать звук';
+    title.className = 'modal-title';
+    modalContent.appendChild(title);
+
+    const subtitle = document.createElement('p');
+    subtitle.className = 'modal-subtitle';
+    subtitle.style = 'text-align: center; margin: 10px 0;';
+    subtitle.textContent = 'Загрузите длину звука и его имя:';
+    modalContent.appendChild(subtitle);
+
+    const soundControls = document.createElement('div');
+    soundControls.className = 'sound-controls';
+
+    const durationInput = document.createElement('input');
+    durationInput.type = 'number';
+    durationInput.id = 'soundDurationInput';
+    durationInput.min = '1';
+    durationInput.max = '10';
+    durationInput.step = '0.1';
+    durationInput.placeholder = 'Длина звука (сек.)';
+    durationInput.ariaLabel = 'Длина звука';
+    soundControls.appendChild(durationInput);
+
+    const nameInput = document.createElement('input');
+    nameInput.type = 'text';
+    nameInput.id = 'soundNameInput';
+    nameInput.placeholder = 'Имя звука';
+    nameInput.ariaLabel = 'Имя звука';
+    soundControls.appendChild(nameInput);
+
+    const saveButton = document.createElement('button');
+    saveButton.id = 'saveSound';
+    saveButton.className = 'save-button';
+    saveButton.textContent = 'Сохранить';
+    soundControls.appendChild(saveButton);
+
+    const cancelButton = document.createElement('button');
+    cancelButton.id = 'cancelSound';
+    cancelButton.className = 'cancel-button';
+    cancelButton.textContent = 'Отменить';
+    soundControls.appendChild(cancelButton);
+
+    modalContent.appendChild(soundControls);
+    modal.appendChild(modalContent);
+
     document.body.appendChild(modal);
 
     modal.style.display = 'block';
     modal.style.overflowY = 'auto';
 
-    const saveButton = document.getElementById('saveSound');
-    const cancelButton = document.getElementById('cancelSound');
-    const durationInput = document.getElementById('soundDurationInput');
-    const nameInput = document.getElementById('soundNameInput');
-
-    saveButton.addEventListener('click', function() {
-        saveSoundToStorage(soundId, durationInput, nameInput);
+    const modalOverlay = modal.querySelector('.modal-overlay');
+    modalOverlay.addEventListener('click', function() {
         closeModal(modal);
     });
 
-    cancelButton.addEventListener('click', function() {
+    const saveButtonElement = document.getElementById('saveSound');
+    const cancelButtonElement = document.getElementById('cancelSound');
+    const durationInputElement = document.getElementById('soundDurationInput');
+    const nameInputElement = document.getElementById('soundNameInput');
+
+    // Настройка tabindex для переключения по Tab
+    durationInputElement.setAttribute('tabindex', '0');
+    nameInputElement.setAttribute('tabindex', '1');
+    saveButtonElement.setAttribute('tabindex', '2');
+    cancelButtonElement.setAttribute('tabindex', '3');
+
+    // Обработка нажатия Enter для сохранения
+    saveButtonElement.addEventListener('click', function() {
+        saveSoundToStorage(soundId, durationInputElement, nameInputElement);
         closeModal(modal);
     });
 
-    // Закрытие модального окна при нажатии на Esc
-    modal.addEventListener('keydown', function(e) {
+    saveButtonElement.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            saveSoundToStorage(soundId, durationInputElement, nameInputElement);
+            closeModal(modal);
+        }
+    });
+
+    cancelButtonElement.addEventListener('click', function() {
+        closeModal(modal);
+    });
+
+    cancelButtonElement.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
+            closeModal(modal);
+        }
+    });
+
+    // Обработка нажатия Enter в полях ввода
+    durationInputElement.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            saveSoundToStorage(soundId, durationInputElement, nameInputElement);
+            closeModal(modal);
+        }
+    });
+
+    nameInputElement.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            saveSoundToStorage(soundId, durationInputElement, nameInputElement);
             closeModal(modal);
         }
     });
