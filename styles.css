@@ -1,87 +1,3 @@
-.sound-edit-modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-
-.modal-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-}
-
-.modal-content {
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    max-width: 500px;
-    width: 90%;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    position: relative;
-    text-align: center;
-    z-index: 1001;
-}
-
-.modal-title {
-    margin-top: 0;
-    color: #333;
-    text-align: center;
-}
-
-.modal-subtitle {
-    color: #666;
-    font-size: 0.9rem;
-    margin: 10px 0;
-}
-
-.sound-controls {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 15px;
-    width: 100%;
-}
-
-.file-input {
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    width: 100%;
-    max-width: 300px;
-}
-
-.save-button, .cancel-button {
-    padding: 8px 15px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-top: 10px;
-    width: 100%;
-}
-
-.save-button:hover {
-    background-color: #45a049;
-}
-
-.cancel-button {
-    background-color: #f44336;
-}
-
-.cancel-button:hover {
-    background-color: #d32f2f;
-}
-
 .loading-screen {
     display: flex;
     flex-direction: column;
@@ -92,12 +8,16 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: white;
-    color: #333;
+    background-color: rgba(0, 0, 0, 0.1);
+    color: var(--text-color);
     z-index: 1000;
     pointer-events: none;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     justify-content: center;
+    overflow: hidden;
+    --text-color: #333;
+    --text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    --checkmark-color: #4CAF50;
 }
 
 .loading-progress-container {
@@ -107,6 +27,11 @@
     margin-bottom: 15px;
     flex-direction: column;
     align-items: center;
+    --progress-color: #4CAF50;
+    --progress-bg: #e0e0e0;
+    width: 100%;
+    position: relative;
+    --checkmark-color: #4CAF50;
 }
 
 .loading-spinner {
@@ -114,44 +39,102 @@
     height: 60px;
     border: 6px solid rgba(0, 0, 0, 0.1);
     border-radius: 50%;
-    border-top-color: #4CAF50;
-    animation: spin 1s linear infinite;
+    border-top-color: var(--progress-color);
+    animation: loading-spinner-animation 1s ease-in-out infinite;
     margin-bottom: 10px;
-    will-change: transform;
+    will-change: transform, opacity;
     opacity: 1;
+    position: relative;
+    margin: 0 auto;
+    --progress-color: #4CAF50;
+    --progress-bg: #e0e0e0;
+    --text-color: #333;
+}
+
+.loading-checkmark {
+    display: none;
+    width: 40px;
+    height: 40px;
+    color: var(--checkmark-color);
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 10px;
+    animation: checkmark-appear 0.5s ease-out forwards;
+    --checkmark-color: #4CAF50;
 }
 
 .loading-message {
     font-size: 1.5rem;
     font-weight: bold;
-    color: #333;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    color: var(--text-color);
+    text-shadow: var(--text-shadow);
     margin-bottom: 10px;
+    aria-label: "Загрузка контента, пожалуйста, подождите";
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    --text-color: #333;
+    --text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .progress-container {
     width: 80px;
     height: 4px;
-    background-color: #e0e0e0;
+    background-color: var(--progress-bg);
     border-radius: 2px;
     position: relative;
     margin-bottom: 10px;
+    overflow: hidden;
 }
 
 .progress-bar {
-    width: 0%;
     height: 100%;
-    background-color: #4CAF50;
+    background-color: var(--progress-color);
     border-radius: 2px;
-    transition: width 0.3s ease;
-    position: absolute;
-    top: 0;
-    left: 0;
+    animation: progress-fill 1.5s ease-in-out forwards;
 }
 
-@keyframes spin {
+@keyframes loading-spinner-animation {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+@keyframes progress-fill {
+    0% { width: 0%; }
+    100% { width: 100%; }
+}
+
+@keyframes checkmark-appear {
+    0% { opacity: 0; transform: translateY(10px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+.loading-screen.finished {
+    pointer-events: auto;
+    opacity: 0.9;
+    transition: opacity 0.3s ease;
+}
+
+.loading-screen.finished .loading-spinner {
+    animation-play-state: paused;
+    opacity: 0;
+    animation: none;
+}
+
+.loading-screen.finished .loading-checkmark {
+    display: block;
+    animation: checkmark-appear 0.5s ease-out forwards;
+}
+
+.loading-screen.finished .loading-message {
+    color: #2E7D32;
+    animation: pulse-text 1.5s infinite ease-in-out;
+    text-shadow: none;
+}
+
+@keyframes pulse-text {
+    0%, 80%, 100% { opacity: 1; }
+    40% { opacity: 0.5; }
 }
 
 /* Адаптивность для разных устройств */
@@ -159,6 +142,11 @@
     .loading-spinner {
         width: 50px;
         height: 50px;
+    }
+    .loading-checkmark {
+        width: 30px;
+        height: 30px;
+        font-size: 20px;
     }
     .loading-message {
         font-size: 1.3rem;
@@ -173,6 +161,11 @@
         width: 40px;
         height: 40px;
     }
+    .loading-checkmark {
+        width: 25px;
+        height: 25px;
+        font-size: 16px;
+    }
     .loading-message {
         font-size: 1.2rem;
     }
@@ -182,4 +175,12 @@
     .progress-container {
         width: 40px;
     }
+    .loading-screen.finished .loading-checkmark {
+        margin-top: 5px;
+    }
+}
+
+.loading-screen.finished .loading-message {
+    color: #2E7D32;
+    animation: none;
 }
