@@ -41,6 +41,12 @@ document.addEventListener('DOMContentLoaded', () => {
       skeletonLoader.style.display = 'none';
       skeletonLoader.style.animation = 'none';
     });
+    
+    // Отображаем кнопку теста загрузки звука
+    const testLoadContainer = document.getElementById('test-load-container');
+    if (testLoadContainer) {
+      testLoadContainer.style.display = 'block';
+    }
   }
 
   // Запуск анимации прогресса

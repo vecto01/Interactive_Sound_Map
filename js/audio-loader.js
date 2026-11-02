@@ -34,6 +34,45 @@ const AudioLoader = {
         loader.appendChild(progressText);
         document.body.appendChild(loader);
     },
+    // Логика загрузки звука с обработкой ошибок
+    loadSound: function(url) {
+        return new Promise((resolve, reject) => {
+            this.showLoader();
+            
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Загрузка звука прервана: ${response.status} ${response.statusText}. Проверьте URL или интернет-соединение.`);
+                    }
+                    return response.blob();
+                })
+                .then(blob => {
+                    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    const audioSource = audioContext.createBufferSource();
+                    const audioBuffer = audioContext.decodeAudioData(blob);
+                    audioSource.buffer = audioBuffer;
+                    audioSource.connect(audioContext.destination);
+                    audioSource.start(0);
+                    resolve(audioBuffer);
+                })
+                .catch(error => {
+                    reject(error);
+                    this.hideLoader();
+                    const errorMessage = document.createElement('div');
+                    errorMessage.className = 'audio-error-message';
+                    errorMessage.textContent = 'Ошибка загрузки звука. Попробуйте снова.';
+                    errorMessage.style.position = 'fixed';
+                    errorMessage.style.top = '50%';
+                    errorMessage.style.left = '50%';
+                    errorMessage.style.transform = 'translate(-50%, -50%)';
+                    errorMessage.style.backgroundColor = '#ffebee';
+                    errorMessage.style.color = '#c62828';
+                    errorMessage.style.padding = '15px';
+                    errorMessage.style.borderRadius = '8px';
+                    document.body.appendChild(errorMessage);
+                });
+        });
+    },
     // Анимация прогресса загрузки
     animateProgress: function(progress) {
         const progressBar = document.querySelector('.audio-progress-bar');
