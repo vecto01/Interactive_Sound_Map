@@ -1,87 +1,40 @@
-#!/usr/bin/env node
-// Инициализация элементов и обработка загрузки
-let testButton = document.querySelector('.test-button');
-let loadingSpinner = document.getElementById('loadingSpinner');
-let soundMap = document.getElementById('soundMap');
-let soundModal = document.getElementById('soundModal');
-let closeModalButton = document.getElementById('closeModalButton');
-let saveSoundButton = document.getElementById('saveSoundButton');
-
-// Показываем загрузку
-function showLoading() {
-  if (loadingSpinner) {
-    loadingSpinner.style.display = 'flex';
-    soundMap.classList.add('loading');
+# Инициализация загрузки интерфейса
+// Проверка и обработка ошибок localStorage
+function saveSound() {
+  try {
+    const soundData = {
+      id: 'test',
+      name: 'Test Sound',
+      location: 'Global'
+    };
+    localStorage.setItem('userSound', JSON.stringify(soundData));
+    alert('Звук сохранён!');
+  } catch (e) {
+    if (e.name === 'QuotaExceededError') {
+      alert('Ошибка: не хватает места в localStorage!');
+      const confirmStorage = confirm('Не хватает места в localStorage. Хотите:
+        1. Использовать sessionStorage (очистится при закрытии браузера)?
+        2. Очистить localStorage вручную?');
+      
+      if (confirmStorage === 1) {
+        sessionStorage.setItem('userSound', JSON.stringify(soundData));
+        alert('Звук сохранён в sessionStorage!');
+      } else if (confirmStorage === 2) {
+        localStorage.removeItem('userSound');
+        alert('localStorage очищен. Попробуйте сохранить звук снова.');
+      }
+    } else {
+      alert('Ошибка сохранения: ' + e.message);
+    }
   }
-}
 
-// Скрываем загрузку
-function hideLoading() {
-  if (loadingSpinner) {
-    loadingSpinner.style.display = 'none';
-    soundMap.classList.remove('loading');
-  }
-}
-
-// Функция для открытия модального окна
-function openModal() {
-  soundModal.style.display = 'block';
-  document.body.style.overflow = 'hidden';
-}
-
-// Функция для закрытия модального окна
-function closeModal() {
-  soundModal.style.display = 'none';
-  document.body.style.overflow = 'auto';
-}
-
-// Обработка нажатия на кнопку Test Sound
-function handleTestSound() {
-  showLoading();
-  setTimeout(() => {
-    openModal();
-    hideLoading();
-  }, 1000);
-}
-
-// Проверка на пульсацию кнопки при загрузке
-function handleLoading() {
-  if (testButton) {
-    testButton.classList.add('test-button-pulse');
-  }
-}
-
-// Обработка клавиатуры для модального окна
-soundModal.addEventListener('keydown', (event) => {
-  if (event.key === 'Escape') {
-    event.preventDefault();
-    closeModal();
-  }
-});
-
-// Обработка нажатия на кнопку Test Sound
-if (testButton) {
-  testButton.addEventListener('click', handleTestSound);
-  testButton.addEventListener('focus', () => {
-    testButton.classList.add('test-button-focus');
+// Кнопка сохранения звука
+if (saveSoundButton) {
+  saveSoundButton.addEventListener('click', saveSound);
+  saveSoundButton.addEventListener('focus', () => {
+    saveSoundButton.classList.add('test-button-focus');
   });
-  testButton.addEventListener('blur', () => {
-    testButton.classList.remove('test-button-focus');
+  saveSoundButton.addEventListener('blur', () => {
+    saveSoundButton.classList.remove('test-button-focus');
   });
 }
-
-// Закрытие модального окна
-if (closeModalButton) {
-  closeModalButton.addEventListener('click', () => closeModal());
-}
-
-// Обработка нажатия на карту звука
-soundMap.addEventListener('click', (event) => {
-  const dot = event.target.closest('.map-dot');
-  if (dot) {
-    alert(`Вы выбрали звук с ID: ${dot.getAttribute('data-sound')}`);
-  }
-});
-
-// Инициализация загрузки интерфейса
-window.addEventListener('DOMContentLoaded', handleLoading);

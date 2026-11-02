@@ -1,120 +1,49 @@
-/** Основной контейнер и футер */
+/* Анимация индикатора загрузки */
+.loading {
+  animation: rotate 2s linear infinite;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Анимация галочки (fade-in) */
+.success-icon {
+  opacity: 0;
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Центрирование элементов */
 .container {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  color: #333333; /* Контраст для текста */
-}
-
-@media (max-width: 1200px) {
-  .container {
-    padding: 15px;
-  }
-}
-
-@media (max-width: 900px) {
-  .container {
-    padding: 10px;
-  }
-}
-
-@media (max-width: 768px) {
-  .container {
-    padding: 8px;
-  }
-  .test-button {
-    margin: 10px auto;
-    font-size: 14px;
-  }
-  .sound-visualizer, .sound-map {
-    margin: 10px 0;
-  }
-}
-
-@media (max-width: 480px) {
-  .container {
-    padding: 5px;
-  }
-  .test-button {
-    margin: 5px auto;
-    font-size: 12px;
-  }
-  .sound-visualizer, .sound-map {
-    margin: 5px 0;
-  }
-}
-
-/* Карта звука */
-.sound-map {
-  width: 100%;
-  height: 150px;
-  background-color: #e6f7ff;
-  border-radius: 8px;
-  margin: 20px 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
-  position: relative;
-  transition: width 0.5s ease;
+  width: 100%;
 }
 
-.sound-map.loading {
-  width: 0;
-  animation: fill 2s ease-in-out infinite;
-  background-color: #2E7D32;
+/* Контраст и доступность */
+body {
+  background-color: #ffffff; /* или #f5f5f5 для тёмной темы */
 }
 
-.sound-map.loading::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background-color: white;
-  border: 2px solid #4CAF50;
-  animation: spinner 1s linear infinite;
+.loading-spinner {
+  color: #4CAF50; /* зелёный для загрузки */
+  aria-label: "Загрузка данных...";
 }
 
-@keyframes fill {
-  from {
-    width: 0%;
-    background-color: #2E7D32;
-  }
-  to {
-    width: 100%;
-    background-color: #2E7D32;
-  }
+.text-success {
+  color: #2E7D32; /* более контрастный цвет для текста */
+  font-weight: bold;
 }
 
-@keyframes spinner {
-  0% {
-    transform: rotate(0deg);
-    border-top-color: #4CAF50;
-  }
-  25% {
-    transform: rotate(90deg);
-    border-top-color: #4CAF50;
-    border-right-color: #4CAF50;
-  }
-  50% {
-    transform: rotate(180deg);
-    border-top-color: #4CAF50;
-    border-bottom-color: #4CAF50;
-  }
-  75% {
-    transform: rotate(270deg);
-    border-top-color: #4CAF50;
-    border-left-color: #4CAF50;
-  }
-  100% {
-    transform: rotate(360deg);
-    border-top-color: #4CAF50;
-  }
+/* :focus-visible для кнопок */
+button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
+  outline: 2px solid #4CAF50; /* зелёная рамка для фокуса */
+  outline-offset: 2px;
 }

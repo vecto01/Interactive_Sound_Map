@@ -1,0 +1,50 @@
+.modal {
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  color: white;
+  background-color: #333;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 90%;
+}
+
+/* Контраст и фокус для кнопок и инпутов в модальном окне
+*/
+.modal-content button, 
+.modal-content input[type="button"] {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 4px;
+}
+
+.modal-content button:focus-visible, 
+.modal-content input[type="button"]:focus-visible {
+  outline: 3px solid #2E7D32;
+  outline-offset: 2px;
+}
+
+.modal-content input[type="text"] {
+  color: white;
+  background-color: #444;
+  border: 1px solid #555;
+  padding: 8px;
+  border-radius: 4px;
+}
+
+.modal-content input[type="text"]:focus-visible {
+  outline: 2px solid #666;
+  outline-offset: 2px;
+}

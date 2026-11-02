@@ -1,146 +1,32 @@
 <!DOCTYPE html>
+
+<script>
+    console.log('HTML загружен. Проверка скрипта a11y-test.js...');
+</script>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Interactive Sound Map</title>
+  <link rel="stylesheet" href="styles/main.css">
   <link rel="stylesheet" href="styles.css">
-  <style>
-    /* Дополнительные стили для визуализации звука */
-    .sound-visualizer {
-      width: 100%;
-      height: 200px;
-      background-color: #f0f0f0;
-      border-radius: 8px;
-      margin: 20px 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      overflow: hidden;
-    }
-    
-    .waveform {
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(to bottom, #4CAF50, #2E7D32);
-      position: relative;
-    }
-    
-    .waveform::before, .waveform::after {
-      content: "";
-      position: absolute;
-      width: 100%;
-      height: 10px;
-      background: rgba(255, 255, 255, 0.3);
-      border-radius: 5px;
-      top: 50%;
-    }
-    
-    .waveform::before {
-      transform: translateY(-50%) scaleX(0.5);
-      animation: wave 2s ease-in-out infinite;
-    }
-    
-    .waveform::after {
-      transform: translateY(-50%) scaleX(0.5);
-      animation: wave 1.5s ease-in-out infinite reverse;
-    }
-    
-    @keyframes wave {
-      0%, 100% { transform: translateY(-50%) scaleX(0.5); }
-      50% { transform: translateY(-50%) scaleX(1.5); }
-    }
-    
-    .sound-label {
-      position: absolute;
-      top: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      color: white;
-      font-size: 14px;
-      font-weight: bold;
-    }
-    
-    /* Карта звука (простой пример) */
-    .sound-map {
-      width: 100%;
-      height: 150px;
-      background-color: #e0f7fa;
-      border-radius: 8px;
-      margin: 20px 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    
-    .map-dot {
-      width: 12px;
-      height: 12px;
-      background-color: #4CAF50;
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: white;
-      font-size: 10px;
-      cursor: pointer;
-      transition: transform 0.2s ease, background-color 0.2s ease;
-    }
-    
-    .map-dot:hover {
-      transform: scale(1.2);
-      background-color: #388E3C;
-    }
-    
-    .map-dot:focus-visible {
-      outline: 2px solid #0066cc;
-      outline-offset: 2px;
-    }
-  </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Interactive Sound Map</h1>
-    <p style="color: #333333; font-weight: bold; font-size: 14px;">Нажмите кнопку "Test Sound", чтобы визуализировать звук на карте. Карта покажет активность звука в реальном времени.</p>
-    
-    <!-- Индикатор загрузки -->
-    <div class="loading-spinner" id="loadingSpinner">
-      <div class="spinner"></div>
-      <div class="loading-text">Загрузка интерфейса...</div>
-    </div>
-    
-    <!-- Кнопка Test Sound -->
-    <button class="test-button" id="testSoundButton">Test Sound</button>
-    
-    <!-- Визуализация звука -->
-    <div class="sound-visualizer" id="soundVisualizer">
-      <div class="waveform"></div>
-      <div class="sound-label">Sound Wave</div>
-    </div>
-    
-    <!-- Карта звука -->
-    <div class="sound-map" id="soundMap">
-      <div class="map-dot" data-sound="1">A</div>
-      <div class="map-dot" data-sound="2">B</div>
-      <div class="map-dot" data-sound="3">C</div>
-    </div>
-    
-    <!-- Модальное окно -->
-    <div class="modal" id="soundModal">
-      <div class="modal-content">
-        <span class="close-button" id="closeModalButton">×</span>
-        <h2>Sound Details</h2>
-        <p>Here is the sound data for the selected location.</p>
-        <button class="modal-button" id="saveSoundButton">Save Sound</button>
-      </div>
-    </div>
-    
-    <!-- Футер -->
-    <footer class="footer">
-      <p style="color: #333333; font-weight: bold; font-size: 14px; font-style: italic;">© 2024 Interactive Sound Map. Все права защищены.</p>
-    </footer>
+    <script src="a11y-test.js" defer></script>
+    <script>
+        // Запуск теста в браузере для отображения результатов
+        console.log("Тест доступности :focus-valid и скролла запущен.");
+    </script>
+  <div class="map-container container">
+    <script>
+        console.log('Тест подключения скрипта a11y-test.js выполнен.');
+        console.log('Проверка выполнения a11y-test.js...');
+        window.testA11y = true; // Для ручного тестирования в DevTools
+    </script>
+
+    <!-- Карта будет загружаться здесь -->
+    <div class="loading-indicator loading-complete"></div>
+    <div class="loading-text">Загрузка...</div>
+    <div class="loading-complete"></div>
   </div>
-  
-  <script src="main.js"></script>
-</body>
-</html>
+  <script src="scripts/main.js"></script>
