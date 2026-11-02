@@ -1,29 +1,15 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const skeletonLoader = document.querySelector('.skeleton-loader');
+document.addEventListener('DOMContentLoaded', function() { 
+  const loadingContainer = document.querySelector('.loading-container');
   const mapContainer = document.querySelector('.map-container');
-
-  if (skeletonLoader && mapContainer) {
-    mapContainer.addEventListener('load', () => {
-      skeletonLoader.style.display = 'none';
-      const spinLoader = document.createElement('div');
-      spinLoader.className = 'spin-loader';
-      skeletonLoader.appendChild(spinLoader);
-      setTimeout(() => {
-        spinLoader.style.display = 'none';
-      }, 1000);
-    });
-  }
-
-  // Логика адаптивности кнопки "Play"
-  const playButton = document.querySelector('.play-button');
-  if (playButton) {
-    playButton.addEventListener('click', () => {
-      if (window.innerWidth <= 768) {
-        playButton.style.opacity = '0.5';
-        setTimeout(() => {
-          playButton.style.opacity = '1';
-        }, 1000);
-      }
-    });
-  }
-})
+  
+  // Показываем анимацию загрузки
+  loadingContainer.style.display = 'flex';
+  
+  // Скрываем анимацию после загрузки карточек
+  mapContainer.addEventListener('load', function() {
+    loadingContainer.style.opacity = '0';
+    setTimeout(() => {
+      loadingContainer.style.display = 'none';
+    }, 300); // Плавное скрытие
+  });
+});

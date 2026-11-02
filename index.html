@@ -1,33 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Interactive Sound Map</title>
-  <link rel="stylesheet" href="css/styles.css">
-  <link rel="stylesheet" href="css/loading-animation.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Sound Map</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Индикатор загрузки (вращающийся круг) */
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        /* Сообщение загрузки */
+        .loading-message {
+            text-align: center;
+            font-size: 1.2rem;
+            margin: 20px 0;
+        }
+        
+        /* Темная тема */
+        body.theme-dark {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        body.theme-dark .loading-message {
+            color: white;
+        }
+        
+        body.theme-light {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        body.theme-light .loading-message {
+            color: #333;
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <div class="logo">Interactive Sound Map</div>
-  </header>
-  
-  <div class="loading-container">
-    <div class="skeleton-loader">
-      <div class="spin-loader"></div>
+    <div class="loading-screen">
+        <div class="loading-spinner"></div>
+        <div class="loading-message">Loading...</div>
     </div>
-    <div class="loading-text">Loading...</div>
-  </div>
-  
-  <div class="map-container">
-    <!-- Карта и контент будут загружены здесь -->
-  </div>
-  
-  <footer>
-    <p>© 2023 Interactive Sound Map. All rights reserved.</p>
-  </footer>
+    <script src="script.js">
 
-  <script src="js/main.js"></script>
-  <script src="js/loading.js"></script>
+<!-- Кнопка для теста загрузки звука -->
+<button id="test-sound-load" style="position: fixed; bottom: 20px; right: 20px; padding: 10px; background: #4CAF50; color: white; border: none; border-radius: 5px; z-index: 9999;">Тест загрузки звука</button>
+    </script>
 </body>
 </html>

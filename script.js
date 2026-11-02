@@ -1,80 +1,48 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Анимация загрузки
-    const loadingScreen = document.getElementById('loading-screen');
-    const mainContent = document.getElementById('main-content');
+    // Лоадер и анимации
+    const loadingScreen = document.querySelector('.loading-screen');
+    const spinner = document.querySelector('.spinner');
+    const loadingText = document.querySelector('.loading-text');
+    const cardsContainer = document.getElementById('cards-container');
     
-    // Проверка наличия данных для отображения
-    if (mainContent.children.length > 0) {
-        loadingScreen.style.display = 'none';
+    // Показываем вращающийся индикатор
+    function showLoader() {
+        loadingScreen.style.display = 'flex';
+        loadingScreen.style.opacity = '1';
+        spinner.style.animation = 'spin 1s ease-in-out infinite';
+        loadingText.textContent = 'Loading...';
     }
     
-    // Темная/светлая тема
-    const themeToggle = document.getElementById('theme-toggle');
-    const body = document.body;
-    
-    // Загрузка сохранённого состояния
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
-        body.classList.add('dark-mode');
-        themeToggle.checked = true;
-    }
-    
-    // Логика переключения тем
-    themeToggle.addEventListener('change', () => {
-        if (themeToggle.checked) {
-            body.classList.add('dark-mode');
-            localStorage.setItem('theme', 'dark');
-        } else {
-            body.classList.remove('dark-mode');
-            localStorage.setItem('theme', 'light');
-        }
-    });
-    
-    // Анимация появления карточек
-    const cards = document.querySelectorAll('.card');
-    cards.forEach((card, index) => {
-        card.addEventListener('click', () => {
-            card.classList.add('active');
-            // Убираем анимацию после клика, если нужно
-            // card.classList.remove('active');
-        });
-    });
-    
-    // Анимация футера при прокрутке
-    const footer = document.querySelector('footer');
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > footer.offsetTop - 100) {
-            footer.style.opacity = '1';
-            footer.style.transform = 'translateY(0)';
-        }
-    });
-    
-    // Фиксация кнопки на мобильных
-    const playButton = document.createElement('button');
-    playButton.className = 'play-button';
-    playButton.textContent = 'Play';
-    playButton.style.backgroundColor = '#4CAF50';
-    playButton.style.color = 'white';
-    playButton.style.border = 'none';
-    playButton.style.borderRadius = '4px';
-    playButton.style.padding = '12px 24px';
-    playButton.style.cursor = 'pointer';
-    
-    document.body.appendChild(playButton);
-    
-    // Проверка адаптивности на мобильных
-    if (window.innerWidth <= 768) {
-        playButton.style.display = 'block';
-    }
-    
-    // Динамическое добавление карточек (если есть) для анимации
-    const cardsContainer = document.querySelector('.map-container');
-    if (cardsContainer.children.length > 0) {
-        cardsContainer.style.opacity = '0';
-        cardsContainer.style.transform = 'translateY(20px)';
+    // Плавное исчезновение лоадера
+    function hideLoader() {
+        spinner.style.animation = 'none';
+        loadingScreen.style.opacity = '0.5';
+        
         setTimeout(() => {
+            loadingScreen.classList.add('hidden');
             cardsContainer.style.opacity = '1';
-            cardsContainer.style.transform = 'translateY(0)';
-        }, 100);
+            cardsContainer.style.transition = 'opacity 0.5s ease-out';
+        }, 1000);
+    }
+    
+    // Проверка загрузки карты
+    const mapContainer = document.querySelector('.map-container');
+    if (mapContainer) {
+        mapContainer.addEventListener('load', hideLoader);
+    }
+    
+    // Инициализация лоадера
+    showLoader();
+    
+    // Анимация появления футера
+    const footer = document.querySelector('footer');
+    if (footer) {
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > footer.offsetTop - 100) {
+                footer.classList.add('visible');
+            } else {
+                footer.classList.remove('visible');
+            }
+        });
     }
 });
