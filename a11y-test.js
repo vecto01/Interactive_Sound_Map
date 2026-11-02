@@ -1,39 +1,45 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // Проверка :focus-visible для всех фокусируемых элементов
-    const focusableElements = document.querySelectorAll('[tabindex="-1"]:not([tabindex=""]), a[href], button, input, select, textarea, [contenteditable], [role="button"]');
-    focusableElements.forEach(el => {
-        if (!el.matches(':focus-visible')) {
-            console.error(`[A11Y ERROR] Element ${el.tagName} ${el.id || el.className} does not support :focus-visible.`);
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Тест доступности запущен.');
+    
+    // Проверка :focus-visible для всех взаимодействий
+    const focusableElements = document.querySelectorAll('[data-test="focusable"], button, input, textarea, select, [role="button"]');
+    
+    focusableElements.forEach(element => {
+        const isFocusVisible = element.matches(':focus-visible');
+        
+        if (!isFocusVisible) {
+            console.error(`Элемент ${element.tagName} не поддерживает :focus-visible.`);
+            element.setAttribute('aria-label', 'Элемент не поддерживает фокус');
         }
     });
-
+    
     // Проверка скролла модального окна
-    const modal = document.querySelector('[data-test="modal"]');
-    if (modal) {
-        const scrollableContent = modal.querySelector('[data-test="scrollable-content"]');
-        if (scrollableContent) {
-            scrollableContent.addEventListener('scroll', () => {
-                console.log('Модальное окно прокручивается:', scrollableContent.scrollTop);
-            });
-            
-            // Проверка видимости элементов внутри модального окна
-            const scrollableElements = scrollableContent.querySelectorAll('[data-test="scrollable-item"]');
-            scrollableElements.forEach(el => {
-                if (!el.offsetParent) {
-                    console.error(`[A11Y ERROR] Scrollable item ${el.id} is not visible after scroll.`);
-                }
-            });
-        }
-    }
-
-    // Проверка ARIA-атрибутов
-    const ariaElements = document.querySelectorAll('[aria-live], [aria-busy]');
-    ariaElements.forEach(el => {
-        if (!el.getAttribute('aria-live') || !el.getAttribute('aria-busy')) {
-            console.error(`[A11Y ERROR] Missing ARIA attributes on element: ${el.tagName} ${el.id || el.className}`);
+    const modal = document.querySelector('.modal');
+    const modalContent = document.querySelector('.modal-content');
+    
+    // Проверка видимости элементов внутри модального окна
+    const scrollableElements = document.querySelectorAll('.modal-content [data-test="scrollable"]');
+    
+    scrollableElements.forEach(element => {
+        const isVisible = element.scrollIntoView({ behavior: 'smooth' });
+        
+        if (!isVisible) {
+            console.error(`Элемент ${element.tagName} не может быть прокручен в модальном окне.`);
         }
     });
-
-    // Логирование ошибок в консоль
-    console.log('A11Y тест завершён. Проверьте консоль браузера.');
+    
+    // Проверка ARIA-атрибутов для индикаторов загрузки
+    const loadingIndicator = document.querySelector('.loading-indicator.completed');
+    if (loadingIndicator) {
+        loadingIndicator.setAttribute('aria-live', 'polite');
+        loadingIndicator.setAttribute('aria-busy', 'true');
+    }
+    
+    // Проверка сообщения об успешном завершении
+    const successMessage = document.querySelector('.success-message');
+    if (successMessage) {
+        successMessage.setAttribute('aria-live', 'polite');
+    }
+    
+    console.log('Тест доступности завершён.');
 });

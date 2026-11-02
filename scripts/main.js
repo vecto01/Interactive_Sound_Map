@@ -1,25 +1,16 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Показываем загрузку
-    const loadingContainer = document.getElementById('loading-container');
-    const mainContent = document.getElementById('main-content');
-    const successMessage = document.getElementById('success-message');
+    const loadingIndicator = document.querySelector('.loading-indicator');
+    const loadingText = document.querySelector('.loading-text');
+    const successMessage = document.querySelector('.success-message');
     
-    // Устанавливаем обработчик для загрузки данных
-    window.loadData = function() {
-        // Скрываем загрузку
-        loadingContainer.classList.add('hidden');
-        
-        // Показываем сообщение об успешном завершении
+    // Имитация загрузки
+    setTimeout(() => {
+        loadingIndicator.classList.add('completed');
+        loadingText.style.opacity = '0';
+        successMessage.style.opacity = '1';
         successMessage.classList.remove('hidden');
-        
-        // Загружаем основной контент
-        setTimeout(() => {
-            mainContent.innerHTML = '<div style="text-align: center; color: #4CAF50;">Содержимое загружено!</div>';
-            
-            // Убираем сообщение о завершении
-            successMessage.classList.add('hidden');
-        }, 500);
-    };
+    }, 1500);
     
     // Логирование ошибок
     window.errorHandler = function(message) {
@@ -30,11 +21,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Функция для обработки сохранения звука
     window.saveSound = function(soundData) {
         try {
-            // Проверяем объем localStorage
             if (window.localStorage.length > 100) {
                 window.errorHandler('localStorage переполнен. Предлагаем использовать sessionStorage или очистить localStorage.');
                 
-                // Показываем предложение пользователю
                 const confirmation = confirm('localStorage переполнен. Хотите использовать sessionStorage или очистить localStorage?');
                 
                 if (confirmation) {
