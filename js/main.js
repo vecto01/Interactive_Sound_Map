@@ -5,16 +5,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   themeToggle.addEventListener('change', () => {
     if (themeToggle.checked) {
-      body.classList.add('dark-mode');
+      body.classList.add('dark-theme');
     } else {
-      body.classList.remove('dark-mode');
+      body.classList.remove('dark-theme');
     }
     localStorage.setItem('theme', themeToggle.checked ? 'dark' : 'light');
   })
 
   const savedTheme = localStorage.getItem('theme');
   if (savedTheme === 'dark') {
-    body.classList.add('dark-mode');
+    body.classList.add('dark-theme');
     themeToggle.checked = true;
   }
 
@@ -27,10 +27,21 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Логика индикатора загрузки
-  const loadingSpinner = document.getElementById('loadingSpinner');
-  if (loadingSpinner) {
-    loadingSpinner.style.display = 'flex';
+  const loadingOverlay = document.getElementById('loadingOverlay');
+  if (loadingOverlay) {
+    loadingOverlay.style.display = 'none';
   }
+
+  // Показываем загрузку при первом запуске
+  window.addEventListener('load', () => {
+    loadingOverlay.style.display = 'flex';
+    setTimeout(() => {
+      loadingOverlay.style.opacity = '0';
+      setTimeout(() => {
+        loadingOverlay.style.display = 'none';
+      }, 300);
+    }, 1500);
+  });
 
   // Функция для отображения окна ошибки
   function showErrorModal(message) {
@@ -41,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // Анимация загрузки
+  // Анимация загрузки (если есть отдельный контейнер)
   const loadingCircle = document.querySelector('.loading-circle');
   const loadingContainer = document.querySelector('.loading-container');
   if (loadingCircle && loadingContainer) {
