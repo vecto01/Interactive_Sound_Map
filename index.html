@@ -10,23 +10,35 @@
   <title>Interactive Sound Map</title>
   <link rel="stylesheet" href="styles/main.css">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles/loading.css">
 </head>
 <body>
     <script src="a11y-test.js" defer></script>
-    <script>
-        // Запуск теста в браузере для отображения результатов
-        console.log("Тест доступности :focus-valid и скролла запущен.");
-    </script>
-  <div class="map-container container">
-    <script>
-        console.log('Тест подключения скрипта a11y-test.js выполнен.');
-        console.log('Проверка выполнения a11y-test.js...');
-        window.testA11y = true; // Для ручного тестирования в DevTools
-    </script>
-
-    <!-- Карта будет загружаться здесь -->
-    <div class="loading-indicator loading-complete"></div>
-    <div class="loading-text">Загрузка...</div>
-    <div class="loading-complete"></div>
-  </div>
-  <script src="scripts/main.js"></script>
+    
+    <div class="map-container container">
+        <script>
+            console.log('Тест подключения скрипта a11y-test.js выполнен.');
+            console.log('Проверка выполнения a11y-test.js...');
+            window.testA11y = true; // Для ручного тестирования в DevTools
+        </script>
+        
+        <!-- Контейнер для загрузки данных -->
+        <div id="loading-container" class="loading">
+          <div class="loading-spinner"></div>
+          <span class="loading-text">Загрузка данных...</span>
+        </div>
+        
+        <!-- Основной контент приложения -->
+        <div id="main-content">
+          <!-- Здесь будет основной контент -->
+        </div>
+        
+        <!-- Сообщение об успешном завершении -->
+        <div id="success-message" class="success-message hidden">
+          <span class="success-text">Готово!</span>
+        </div>
+    </div>
+    
+    <script src="scripts/main.js"></script>
+</body>
+</html>

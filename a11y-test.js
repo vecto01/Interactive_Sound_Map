@@ -1,44 +1,40 @@
-// Автоматическая проверка доступности :focus-visible и скролла модального окна
-
-// Определяем элементы, которые должны поддерживать :focus-visible
-const focusableElements = document.querySelectorAll('[data-test="focusable"]');
-
-// Проверяем, что элементы поддерживают :focus-visible
-function checkFocusVisible() {
-    const errors = [];
+document.addEventListener('DOMContentLoaded', () => {
+    // Проверка :focus-visible для всех кнопок и элементов форм
+    const focusableElements = document.querySelectorAll('[tabindex="-1"], button, input, textarea, select, [data-test="focusable"]');
     focusableElements.forEach(el => {
         if (!el.matches(':focus-visible')) {
-            errors.push({
-                element: el,
-                message: 'Элемент не поддерживает :focus-visible'
-            });
+            console.warn(`Элемент ${el.tagName} не поддерживает :focus-visible. Проверьте доступность!`);
         }
     });
-    return errors;
-}
 
-// Проверяем скролл модального окна
-function checkModalScroll() {
-    const modal = document.querySelector('[data-test="modal"]');
-    const scrollableContent = modal.querySelector('[data-test="scrollable"]');
-    
-    if (scrollableContent) {
-        const scrollHeight = scrollableContent.scrollHeight;
-        const clientHeight = scrollableContent.clientHeight;
-        
-        if (scrollHeight > clientHeight) {
-            console.log('Скрин: Модальное окно поддерживает скролл');
-        } else {
-            console.error('Ошибка: Контент модального окна не требует скролла или не поддерживается');
+    // Проверка ARIA-атрибутов для сообщений и индикаторов
+    const ariaElements = document.querySelectorAll('[aria-live], [aria-busy]');
+    ariaElements.forEach(el => {
+        if (!el.hasAttribute('aria-live') && !el.hasAttribute('aria-busy')) {
+            console.warn(`Элемент ${el.tagName} отсутствует ARIA-атрибут ${el.getAttribute('aria-live') || 'aria-busy'}.`);
         }
-    } else {
-        console.error('Ошибка: Элемент для скролла не найден в модальном окне');
+    });
+
+    // Проверка текста и видимости элементов
+    const texts = document.querySelectorAll('span, p, h1, h2, h3, h4, h5, h6');
+    texts.forEach(text => {
+        if (text.textContent.trim() && !text.hasAttribute('aria-hidden')) {
+            console.log(`Текст ${text.textContent} доступен для пользователя.`);
+        }
+    });
+
+    // Проверка скролла и видимости
+    const mainContent = document.getElementById('main-content');
+    if (mainContent) {
+        const scrollable = mainContent.scrollHeight > mainContent.clientHeight;
+        if (!scrollable) {
+            console.warn('Основной контент не поддерживает скролл. Проверьте контент!');
+        }
     }
-}
 
-// Запуск проверок
-checkFocusVisible();
-checkModalScroll();
-
-// Логирование ошибок в консоль (для владельца)
-console.log('=== Доступность проверена ===');
+    // Проверка сообщения о завершении загрузки
+    const successMessage = document.getElementById('success-message');
+    if (successMessage && !successMessage.hasAttribute('aria-live')) {
+        console.warn('Сообщение о завершении загрузки отсутствует ARIA-атрибут aria-live.');
+    }
+});

@@ -1,4 +1,30 @@
-/* Анимация индикатора загрузки */
+/* ===== НОВЫЕ АНИМАЦИИ ЗАГРУЗКИ ===== */
+.loading-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid rgba(76, 175, 80, 0.3);
+  border-radius: 50%;
+  border-top-color: #4CAF50;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+.loading-text {
+  color: #4CAF50;
+  font-weight: bold;
+}
+
+.success-text {
+  color: #2E7D32;
+  font-weight: bold;
+}
+
+/* ===== ОБРАТНАЯ СВЯЗЬ ЗАГРУЗКИ ===== */
 .loading {
   animation: rotate 2s linear infinite;
 }
@@ -8,18 +34,7 @@
   to { transform: rotate(360deg); }
 }
 
-/* Анимация галочки (fade-in) */
-.success-icon {
-  opacity: 0;
-  animation: fadeIn 0.5s ease-out forwards;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-/* Центрирование элементов */
+/* ===== ЦЕНТРИРОВАНИЕ И АДАПТИВНОСТЬ ===== */
 .container {
   display: flex;
   justify-content: center;
@@ -27,23 +42,22 @@
   width: 100%;
 }
 
-/* Контраст и доступность */
+/* ===== ДОПОЛНИТЕЛЬНЫЕ СТИЛИ ===== */
 body {
-  background-color: #ffffff; /* или #f5f5f5 для тёмной темы */
+  background-color: #ffffff;
 }
 
 .loading-spinner {
-  color: #4CAF50; /* зелёный для загрузки */
-  aria-label: "Загрузка данных...";
+  margin: 20px 0;
 }
 
 .text-success {
-  color: #2E7D32; /* более контрастный цвет для текста */
+  color: #2E7D32;
   font-weight: bold;
+  animation: fadeIn 0.5s ease-out forwards;
 }
 
-/* :focus-visible для кнопок */
-button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
-  outline: 2px solid #4CAF50; /* зелёная рамка для фокуса */
-  outline-offset: 2px;
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }

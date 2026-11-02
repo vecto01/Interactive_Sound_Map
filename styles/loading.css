@@ -1,0 +1,31 @@
+@media (min-width: 768px) { /* Десктоп и планшет */
+  .loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    padding: 20px 0;
+  }
+  .loading-text {
+    font-size: 1.3rem;
+    transition: color 0.3s ease;
+  }
+}
+
+@media (max-width: 767px) { /* Мобильные устройства */
+  .loading {
+    display: block;
+    text-align: center;
+    margin: 15px 0;
+    padding: 10px 0;
+  }
+  .loading-spinner {
+    width: 28px;
+    height: 28px;
+    margin: 0 auto 8px;
+  }
+  .loading-text {
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+  }
+}

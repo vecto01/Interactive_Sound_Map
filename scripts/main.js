@@ -1,79 +1,65 @@
 document.addEventListener('DOMContentLoaded', function() {
-  // Логика загрузки карты и анимации
-  const loadingIndicator = document.querySelector('.loading-indicator');
-  const loadingBar = document.querySelector('.loading-bar');
-  const mapContainer = document.querySelector('.map-container');
-  let isLoading = true;
-  let progress = 0;
-
-  // Анимация загрузки
-  function animateLoading() {
-    if (isLoading) {
-      loadingIndicator.style.display = 'block';
-      loadingBar.style.display = 'block';
-      
-      // Плавное вращение индикатора
-      loadingIndicator.style.animation = 'spin 1.5s linear infinite';
-      
-      // Плавное заполнение прогресс-бара
-      const progressBar = loadingBar.querySelector('::after');
-      const interval = setInterval(() => {
-        progress += 10;
-        progressBar.style.width = progress + '%';
+    // Показываем загрузку
+    const loadingContainer = document.getElementById('loading-container');
+    const mainContent = document.getElementById('main-content');
+    const successMessage = document.getElementById('success-message');
+    
+    // Устанавливаем обработчик для загрузки данных
+    window.loadData = function() {
+        // Скрываем загрузку
+        loadingContainer.classList.add('hidden');
         
-        if (progress >= 100) {
-          clearInterval(interval);
-          loadingIndicator.style.animation = 'none';
-          loadingIndicator.style.opacity = '0';
-          setTimeout(() => {
-            loadingIndicator.style.display = 'none';
-            loadingBar.style.display = 'none';
-            isLoading = false;
+        // Показываем сообщение об успешном завершении
+        successMessage.classList.remove('hidden');
+        
+        // Загружаем основной контент
+        setTimeout(() => {
+            mainContent.innerHTML = '<div style="text-align: center; color: #4CAF50;">Содержимое загружено!</div>';
             
-            // Карта загружается после анимации
-            mapContainer.innerHTML = '<div class="map"></div>';
-            const points = document.querySelector('.map');
-            points.innerHTML = '<div class="point"></div>';
-          }, 1000);
+            // Убираем сообщение о завершении
+            successMessage.classList.add('hidden');
+        }, 500);
+    };
+    
+    // Логирование ошибок
+    window.errorHandler = function(message) {
+        console.error('Ошибка:', message);
+        alert(`Произошла ошибка: ${message}`);
+    };
+    
+    // Функция для обработки сохранения звука
+    window.saveSound = function(soundData) {
+        try {
+            // Проверяем объем localStorage
+            if (window.localStorage.length > 100) {
+                window.errorHandler('localStorage переполнен. Предлагаем использовать sessionStorage или очистить localStorage.');
+                
+                // Показываем предложение пользователю
+                const confirmation = confirm('localStorage переполнен. Хотите использовать sessionStorage или очистить localStorage?');
+                
+                if (confirmation) {
+                    sessionStorage.setItem('saved_sound', soundData);
+                    console.log('Звук сохранён в sessionStorage.');
+                } else {
+                    localStorage.clear();
+                    console.log('localStorage очищен.');
+                }
+            } else {
+                localStorage.setItem('saved_sound', soundData);
+                console.log('Звук сохранён в localStorage.');
+            }
+        } catch (error) {
+            window.errorHandler('Ошибка при сохранении звука: ' + error.message);
         }
-      }, 100);
-    }
-  }
-
-  // Логика модального окна и обработка событий
-  const saveSound = () => {
-    try {
-      const soundData = { /* Пример данных: */ name: 'test_sound', volume: 0.7, source: 'local' };
-      const userSound = JSON.stringify(soundData);
-      
-      // Проверка на переполнение localStorage
-      if (localStorage.length >= 100) { // Порог можно настроить
-        const shouldDelete = window.confirm('localStorage переполнен! Сохранённые данные будут удалены. Продолжить очистку?');
-        if (shouldDelete) {
-          localStorage.clear();
-          alert('localStorage очищен. Данные сохранены в sessionStorage.');
-        } else {
-          console.error('localStorage переполнен, но данные не сохранены.');
-          return;
-        }
-      }
-      
-      localStorage.setItem('userSound', userSound);
-      alert('Звук успешно сохранён!');
-    } catch (e) {
-      if (e.name === 'QuotaExceededError') {
-        alert('Ошибка: не хватает места в localStorage. Проверьте размер файлов или очистите кэш браузера.');
-      } else if (e instanceof TypeError) {
-        alert('Ошибка: неверный формат данных для сохранения.');
-      } else {
-        alert('Ошибка сохранения: ' + e.message);
-      }
-    }
-  };
-
-  // Пример вызова функции
-  animateLoading();
-
-  // Тест функции сохранения звука
-  window.testSaveSound = saveSound;
+    };
+    
+    // Тест функции сохранения
+    window.testSaveSound = function() {
+        const testSound = JSON.stringify({ sound: 'test_data' });
+        saveSound(testSound);
+        console.log('Тест сохранения звука выполнен.');
+    };
+    
+    // Запуск тестов доступности
+    console.log('Тест доступности :focus-valid и скролла запущен.');
 });
