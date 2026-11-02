@@ -26,7 +26,7 @@
         /* Сообщение загрузки */
         .loading-message {
             text-align: center;
-            font-size: 1.2rem;
+            font-size: clamp(1rem, 2vw, 1.5rem);
             margin: 20px 0;
         }
         
@@ -49,14 +49,10 @@
     </style>
 </head>
 <body>
-    <div class="loading-screen">
+    <div class="loading-screen" role="alert" aria-live="polite">
         <div class="loading-spinner"></div>
         <div class="loading-message">Loading...</div>
     </div>
-    <script src="script.js">
-
-<!-- Кнопка для теста загрузки звука -->
-<button id="test-sound-load" style="position: fixed; bottom: 20px; right: 20px; padding: 10px; background: #4CAF50; color: white; border: none; border-radius: 5px; z-index: 9999;">Тест загрузки звука</button>
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
