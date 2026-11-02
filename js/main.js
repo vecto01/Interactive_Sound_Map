@@ -130,22 +130,21 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Отображение редактора звука при клике на тест-кнопку
-  const testLoadButton = document.getElementById('test-load-button');
-  if (testLoadButton) {
-    testLoadButton.addEventListener('click', () => {
-      const soundEditorContainer = document.getElementById('sound-editor-container');
-      if (soundEditorContainer) {
-        soundEditorContainer.style.display = 'block';
-        // Загрузка скрипта keyboard_controller.js и инициализация обработчиков
-        const keyboardScript = document.createElement('script');
-        keyboardScript.src = 'js/keyboard_controller.js';
-        keyboardScript.onload = () => {
-          const keyboardController = window.keyboardController;
-          keyboardController.setupEventListeners(soundEditorContainer);
-        };
-        document.head.appendChild(keyboardScript);
-      }
+  // Отображение модального окна при клике на тест-кнопку
+  const testButton = document.getElementById('testButton');
+  if (testButton) {
+    testButton.addEventListener('click', () => {
+      const modal = document.getElementById('testModal');
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      // Загрузка скрипта keyboard_controller.js и инициализация обработчиков
+      const keyboardScript = document.createElement('script');
+      keyboardScript.src = 'js/keyboard_controller.js';
+      keyboardScript.onload = () => {
+        const keyboardController = window.keyboardController;
+        keyboardController.setupEventListeners(modal);
+      };
+      document.head.appendChild(keyboardScript);
     });
   }
 })

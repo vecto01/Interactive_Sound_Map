@@ -200,7 +200,7 @@
       tabindex: "0";
     }
 
-    .test-input:focus-visible, .test-textarea:focus-visible {
+    .test-input:focus-visible, .test-textarea:focus-visible, #modalInput:focus-visible, #modalTextarea:focus-visible {
       border-color: var(--focus-visible-outline-color);
       box-shadow: 0 0 0 2px rgba(0, 255, 136, 0.2);
       transform: scale(1.02);
@@ -348,21 +348,21 @@
       <button class="test-button" id="testButton">Нажми для теста</button>
       <input type="text" class="test-input" id="testInput" placeholder="Введите текст">
       <textarea class="test-textarea" id="testTextarea" placeholder="Введите текст здесь"></textarea>
-      <div id="testModal" class="modal">
-        <div class="modal-overlay" aria-modal="true" role="dialog">
-          <div class="modal">
+      <div id="testModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="modal-overlay" role="dialog" aria-modal="true" aria-hidden="false">
+          <div class="modal" role="document">
             <div class="modal-header">
-              <h3 class="modal-title">Редактирование звука</h3>
-              <button class="close-modal" id="closeModal">×</button>
+              <h3 id="modal-title" class="modal-title">Редактирование звука</h3>
+              <button class="close-modal" id="closeModal" aria-label="Закрыть модальное окно">×</button>
             </div>
             <div class="modal-body">
               <div class="error-message" id="errorMessage"></div>
               <div class="success-message" id="successMessage"></div>
-              <input type="text" class="test-input" id="modalInput" placeholder="Название звука">
-              <textarea class="test-textarea" id="modalTextarea" placeholder="Описание звука"></textarea>
+              <input type="text" class="test-input" id="modalInput" placeholder="Название звука" aria-label="Введите название звука">
+              <textarea class="test-textarea" id="modalTextarea" placeholder="Описание звука" aria-label="Введите описание звука"></textarea>
             </div>
             <div class="modal-footer">
-              <button class="save-button" id="saveButton">Сохранить</button>
+              <button class="save-button" id="saveButton" aria-label="Сохранить изменения">Сохранить</button>
             </div>
           </div>
         </div>

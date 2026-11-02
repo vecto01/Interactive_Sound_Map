@@ -1,28 +1,36 @@
-    /* Стили для :focus-visible и улучшение контраста */
-    button:focus-visible, input:focus-visible, textarea:focus-visible {
-      outline: var(--focus-visible-outline-color);
-      outline-width: var(--focus-visible-outline-width);
-      outline-offset: var(--focus-visible-outline-opacity);
-      box-shadow: var(--focus-visible-box-shadow);
-    }
+#{comment: Добавление стилей для :focus-visible и контраста}
+/* Контраст для текста (WCAG AA)
+*/
+body {
+  color: #333;
+  background-color: #fff;
+}
 
-    /* Стили для кнопок и полей ввода */
-    button {
-      color: var(--button-focus-color);
-      border: 1px solid var(--input-border-color);
-      background-color: rgba(0, 0, 0, 0.1);
-      border-radius: 4px;
-      padding: 8px 16px;
-      cursor: pointer;
-    }
+/* Контраст для кнопок и интерактивных элементов
+*/
+button, input[type="button"] {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+}
 
-    input, textarea {
-      border: 1px solid var(--input-border-color);
-      background-color: rgba(255, 255, 255, 0.1);
-      color: var(--text-color);
-      border-radius: 4px;
-      padding: 8px;
-      box-shadow: var(--input-box-shadow);
-    }
+button:focus-visible, input[type="button"]:focus-visible {
+  outline: 3px solid #2E7D32;
+  outline-offset: 2px;
+}
 
-    /* Закрытие секции для :root и .dark-theme */
+/* Контраст для модального окна
+*/
+.modal {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* Контраст для текста в модальном окне
+*/
+.modal-content {
+  color: white;
+}
+
+/* Контраст для кнопки 
